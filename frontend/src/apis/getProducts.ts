@@ -1,9 +1,7 @@
 import axios from "axios";
 import { type IProduct } from "../types";
 
-export async function getProductsAPI(): Promise<
-  IProduct[] | string | Error | undefined
-> {
+export async function getProductsAPI() {
   try {
     const response = await axios.get("/api/products");
 

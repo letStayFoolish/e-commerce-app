@@ -77,6 +77,19 @@ const products = [
     rating: 4,
     numReviews: 12,
   },
+  {
+    _id: "7",
+    name: "Dipacci Coffee Company",
+    image: "/images/coffee.jpg",
+    description:
+      "Dipacci Coffee Company is a coffee roaster and equipment supplier based in Roselands, Sydney. We have been providing customers all around Australia and the world with the best in coffee beans, machines and grinders since 2010.",
+    brand: "Amazon",
+    category: "Electronics",
+    price: 149.99,
+    countInStock: 7,
+    rating: 3.5,
+    numReviews: 43,
+  },
 ];
 
 export default products;
