@@ -1,5 +1,26 @@
+:root {
+  --main-background-color: #4d3626;
+  --secondary-background-color: #ddd8d4;
+  --dark-text-color: #231811;
+}
 main {
   min-height: 80vh;
+  background-color: var(--secondary-background-color);
+}
+
+header {
+  background-color: var(--main-background-color);
+  color: var(--secondary-background-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  color: var(--dark-text-color);
 }
 
 .rating span {
@@ -21,6 +42,15 @@ main {
   overflow: hidden; /* Hide overflow content */
   text-overflow: ellipsis; /* Add ellipsis for long text */
   white-space: nowrap; /* Prevent wrapping */
+}
+
+.product-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit the number of lines to 3 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 5px 0;
 }
 
 table td,
