@@ -10,8 +10,8 @@ const Header = () => {
         <Container>
           <LinkContainer to="/">
             <NavLink>
-              <img src={logo} alt="ProShop" />
-              ProShop
+              <img src={logo} alt="ProShop" width={"80px"} />
+              Coffee Shop
             </NavLink>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />

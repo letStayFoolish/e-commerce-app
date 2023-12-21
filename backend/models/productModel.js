@@ -44,12 +44,12 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
 
-    brand: {
+    origin: {
       type: String,
       required: true,
     },
 
-    category: { type: String, required: true },
+    type: { type: String, required: true },
 
     description: {
       type: String,
