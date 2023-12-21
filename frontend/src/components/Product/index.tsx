@@ -17,6 +17,10 @@ export const Product = ({ product }: ProductProps): JSX.Element => {
           </Card.Title>
         </Link>
 
+        <Card.Text as="div" className="product-text">
+          <p>{product.description}</p>
+        </Card.Text>
+
         <Card.Text as="div">
           <Rating
             value={product.rating}

@@ -1,9 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
-// import products from "../../products";
 import Rating from "../../components/Rating";
-import { useEffect } from "react";
-import { getProductsAPI } from "../../apis/getProducts";
 import { useProducts } from "../../hooks/useProducts";
 
 const ProductDetails = (): JSX.Element => {
