@@ -1,9 +1,10 @@
 import axios from "axios";
 import { type IProduct } from "../types";
+import { PRODUCTS_URL } from "../constants";
 
 export async function getProductsAPI() {
   try {
-    const response = await axios.get("/api/products");
+    const response = await axios.get(PRODUCTS_URL);
 
     if (response.status === 200) {
       return response.data as IProduct[];
