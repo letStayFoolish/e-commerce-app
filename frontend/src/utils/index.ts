@@ -1,0 +1,1 @@
+export { getFullYear } from "./getDate";
