@@ -6,6 +6,7 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import ProductDetails from "./pages/ProductDetails/index.tsx";
+import Home from "./pages/Home/index.tsx";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(

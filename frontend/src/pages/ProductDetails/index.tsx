@@ -1,17 +1,33 @@
 import { Link, useParams } from "react-router-dom";
 import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
 import Rating from "../../components/Rating";
-import { useProducts } from "../../hooks/useProducts";
+import { useGetProductDetailsQuery } from "../../redux/slices/apiSlices/productApi";
 
 const ProductDetails = (): JSX.Element => {
-  const [products, loading] = useProducts();
+  const { productId: productId } = useParams();
 
-  const { productId } = useParams();
+  const {
+    data: product,
+    isLoading,
+    error,
+  } = useGetProductDetailsQuery(productId);
 
-  const product = products?.find((p) => p._id === productId);
+  console.log("productId: ", productId);
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div>
+        <h2>Loading ...</h2>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <h2>Error while fetching data. Please try again.</h2>
+      </div>
+    );
   }
 
   return (

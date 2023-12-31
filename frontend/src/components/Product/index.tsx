@@ -1,31 +1,9 @@
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { ProductProps } from "./types";
-import { useSelector } from "react-redux";
 import Rating from "../Rating";
-import { type RootState } from "../../redux/slices";
+import { type ProductProps } from "./types";
 
 export const Product = ({ product }: ProductProps): JSX.Element => {
-  const { isError, isLoading } = useSelector(
-    (state: RootState) => state.productsReducer
-  );
-
-  if (isLoading) {
-    return (
-      <div>
-        <h1>Loading ...</h1>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div>
-        <h1>Error while fetching data. Please try again.</h1>
-      </div>
-    );
-  }
-
   return (
     <Card className="my-3 p-3 rounded">
       <Link to={`/product/${product._id}`}>

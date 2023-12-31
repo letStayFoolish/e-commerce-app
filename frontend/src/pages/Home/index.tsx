@@ -1,39 +1,28 @@
 import { Row, Col } from "react-bootstrap";
+import { useGetProductsQuery } from "../../redux/slices/apiSlices/productApi";
 import Product from "../../components/Product";
-// import { useProducts } from "../../hooks/useProducts";
-import { useDispatch, useSelector } from "react-redux";
-import { type RootState } from "../../redux/slices";
-import { useEffect } from "react";
-import { getAllProductsSliceStart } from "../../redux/slices/ProductsSlice";
 
 const Home = () => {
-  // const [products, loading] = useProducts();
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getAllProductsSliceStart());
-  }, [dispatch]);
-
-  const { isError, isLoading, products } = useSelector(
-    (state: RootState) => state.productsReducer
-  );
+  const { data: products, isLoading, error } = useGetProductsQuery();
 
   if (isLoading) {
     return (
       <div>
-        <h1>Loading ...</h1>
+        <h2>Loading ...</h2>
       </div>
     );
   }
 
-  if (isError) {
+  if (error) {
     return (
       <div>
-        <h1>Error while fetching data. Please try again.</h1>
+        <h2>
+          {error?.message || "Error while fetching data. Please try again."}
+        </h2>
       </div>
     );
   }
+
   return (
     <>
       <h1>Latest Products</h1>
