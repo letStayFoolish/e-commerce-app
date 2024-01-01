@@ -1,25 +1,21 @@
 import { Row, Col } from "react-bootstrap";
 import { useGetProductsQuery } from "../../redux/slices/apiSlices/productApi";
 import Product from "../../components/Product";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
 
 const Home = () => {
   const { data: products, isLoading, error } = useGetProductsQuery();
 
   if (isLoading) {
-    return (
-      <div>
-        <h2>Loading ...</h2>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {
     return (
-      <div>
-        <h2>
-          {error?.message || "Error while fetching data. Please try again."}
-        </h2>
-      </div>
+      <Message variant="danger">
+        {error?.message || "Error while fetching data. Please try again."}
+      </Message>
     );
   }
 

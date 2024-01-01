@@ -2,6 +2,8 @@ import { Link, useParams } from "react-router-dom";
 import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
 import Rating from "../../components/Rating";
 import { useGetProductDetailsQuery } from "../../redux/slices/apiSlices/productApi";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
 
 const ProductDetails = (): JSX.Element => {
   const { productId: productId } = useParams();
@@ -12,21 +14,15 @@ const ProductDetails = (): JSX.Element => {
     error,
   } = useGetProductDetailsQuery(productId);
 
-  console.log("productId: ", productId);
-
   if (isLoading) {
-    return (
-      <div>
-        <h2>Loading ...</h2>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {
     return (
-      <div>
-        <h2>Error while fetching data. Please try again.</h2>
-      </div>
+      <Message variant="danger">
+        {error?.message || "Error while fetching data. Please try again."}
+      </Message>
     );
   }
 
