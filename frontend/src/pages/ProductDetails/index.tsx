@@ -4,9 +4,19 @@ import Rating from "../../components/Rating";
 import { useGetProductDetailsQuery } from "../../redux/slices/apiSlices/productApi";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/slices/CartSlice";
+import { IProduct } from "../../types";
 
 const ProductDetails = (): JSX.Element => {
   const { productId: productId } = useParams();
+
+  const dispatch = useDispatch();
+
+  function handleAddToCart(product: IProduct) {
+    dispatch(addToCart(product));
+    // console.log("PRODUCT: ", product);
+  }
 
   const {
     data: product,
@@ -79,6 +89,7 @@ const ProductDetails = (): JSX.Element => {
                   className="btn btn-block"
                   type="button"
                   disabled={product?.countInStock === 0}
+                  onClick={() => handleAddToCart(product)}
                 >
                   Add To Cart
                 </Button>

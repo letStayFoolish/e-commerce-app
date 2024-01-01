@@ -2,6 +2,8 @@ import { apiSlice } from "../index";
 import { PRODUCTS_URL } from "../../../../constants";
 import { type IProduct } from "../../../../types";
 
+// slice where we have endpoints where we are dealing with asynchronous request
+
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // FIXME: define types for query: <IProducts[], void> or what else you should use later inside component...
