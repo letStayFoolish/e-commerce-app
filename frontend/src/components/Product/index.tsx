@@ -1,7 +1,7 @@
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { ProductProps } from "./types";
 import Rating from "../Rating";
+import { type ProductProps } from "./types";
 
 export const Product = ({ product }: ProductProps): JSX.Element => {
   return (
