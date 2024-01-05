@@ -1,7 +1,7 @@
-import { type InitialState } from ".";
+import { type CartState } from ".";
 import { addDecimals } from "../../../utils/addDecimals";
 
-export function updateCart(state: InitialState) {
+export function updateCart(state: CartState) {
   // Calculate items price
   state.itemsPrice = addDecimals(
     state.cartItems.reduce((acc, item) => {
