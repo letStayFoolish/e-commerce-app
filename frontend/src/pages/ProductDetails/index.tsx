@@ -35,10 +35,10 @@ const ProductDetails = (): JSX.Element => {
     return <Loader />;
   }
 
-  if (error) {
+  if (error && error instanceof Error) {
     return (
       <Message variant="danger">
-        {error?.message || "Error while fetching data. Please try again."}
+        {error.message || "Error while fetching data. Please try again."}
       </Message>
     );
   }
