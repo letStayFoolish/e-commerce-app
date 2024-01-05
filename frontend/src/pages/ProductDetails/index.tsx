@@ -45,7 +45,7 @@ const ProductDetails = (): JSX.Element => {
 
   function handleAddToCart(product: IProduct) {
     dispatch(addToCart({ ...product, qty })); // so later on in slice you can do: item.qty or item.price etc...
-    // navigate("/cart");
+    navigate("/cart");
   }
 
   return (

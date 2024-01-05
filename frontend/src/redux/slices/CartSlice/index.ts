@@ -3,8 +3,9 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IProduct } from "../../../types";
 import { updateCart } from "./updateCart";
+import { getFromLocalStorage } from "../../../utils/getFromLocalStorage";
 
-export interface InitialState {
+export interface CartState {
   cartItems: IProduct[];
   itemsPrice: string;
   shippingPrice: string;
@@ -12,15 +13,15 @@ export interface InitialState {
   totalPrice: string;
 }
 
-const initialState: InitialState = localStorage.getItem("cart")
-  ? JSON.parse(localStorage.getItem("cart")!)
+const initialState: CartState = getFromLocalStorage("cart")
+  ? JSON.parse(getFromLocalStorage("cart")!)
   : { cartItems: [] };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addToCart(state: InitialState, action: PayloadAction<IProduct>) {
+    addToCart(state: CartState, action: PayloadAction<IProduct>) {
       const item = action.payload;
 
       const existItem = state.cartItems.find((x) => x._id === item._id);
@@ -37,9 +38,19 @@ const cartSlice = createSlice({
 
       localStorage.setItem("cart", JSON.stringify(state));
     },
+
+    removeItemFromCart(state: CartState, action: PayloadAction<string>) {
+      state.cartItems = state.cartItems.filter(
+        (item) => item._id !== action.payload
+      );
+
+      updateCart(state);
+
+      localStorage.setItem("cart", JSON.stringify(state));
+    },
   },
 });
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, removeItemFromCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
