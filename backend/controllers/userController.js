@@ -5,7 +5,22 @@ import asyncHandler from "../middleware/asyncHandler.js";
 // @route   POST /api/users/login
 // @access  Public
 export const authUser = asyncHandler(async (req, res) => {
-  res.send("auth user");
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (user && (await user.matchPasswords(password))) {
+    res.send({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  } else {
+    res.status(401);
+
+    throw new Error("Invalid email or password");
+  }
 });
 
 // @desc    Register user
