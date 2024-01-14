@@ -6,6 +6,7 @@ import generateToken from "../utils/generateToken.js";
 // @route   POST /api/users/login
 // @access  Public
 export const authUser = asyncHandler(async (req, res) => {
+  // Login user
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -73,9 +74,9 @@ export const logoutUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/profile
 // @access  Public
 export const getUserProfile = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
+  const userId = req.user._id;
 
-  const user = await User.findById(_id);
+  const user = await User.findById(userId);
 
   if (user) {
     res.status(201).json({
@@ -95,9 +96,9 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/profile
 // @access  Private
 export const updateUserProfile = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
+  const userId = req.user._id;
 
-  const user = await User.findById(_id);
+  const user = await User.findById(userId);
 
   if (user) {
     user.name = req.body.name || user.name;
