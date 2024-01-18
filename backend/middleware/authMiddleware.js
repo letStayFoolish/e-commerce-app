@@ -16,11 +16,13 @@ const protect = asyncHandler(async (req, res, next) => {
       next();
     } catch (error) {
       console.log(error);
-      res.status(403); // The HTTP status code 403 is used by the server to indicate that access to the requested resource is forbidden
+      res.status(401);
+      // 401: (Unauthorized) status code indicates that the request has not been applied because it lacks valid authentication credentials for the target resource.
+      // 403: The HTTP status code 403 is used by the server to indicate that access to the requested resource is forbidden
       throw new Error("Not authorized, token failed");
     }
   } else {
-    res.status(403);
+    res.status(401);
     throw new Error("Not authorized, no token");
   }
 });
