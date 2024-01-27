@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
   getFromLocalStorage,
   setToLocalStorage,
-} from "../../../utils/handleLocalstorage";
+} from "../../../utils/handleLocalStorage";
 
 export type AuthState = {
   userInfo: boolean | string | null;
@@ -21,6 +21,10 @@ const authSlice = createSlice({
     setCredentials(state: AuthState, action: PayloadAction<boolean>): void {
       state.userInfo = action.payload;
       setToLocalStorage("userInfo", action.payload);
+    },
+
+    logout(state: AuthState) {
+      (state.userInfo = null), localStorage.removeItem("userInfo");
     },
   },
 });

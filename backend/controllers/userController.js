@@ -1,7 +1,6 @@
 import User from "../models/userModel.js";
 import asyncHandler from "../middleware/asyncHandler.js"; // or use third-party library "express-async-handler"
 import generateToken from "../utils/generateToken.js";
-import bcrypt from "bcryptjs/dist/bcrypt.js";
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login

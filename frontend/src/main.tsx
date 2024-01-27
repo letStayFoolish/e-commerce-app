@@ -15,6 +15,7 @@ import store from "./redux/store.ts";
 import Home from "./pages/Home/index.jsx";
 import ProductDetails from "./pages/ProductDetails/index.tsx";
 import Cart from "./pages/Cart/index.tsx";
+import LoginPage from "./pages/Auth/LoginPage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
       <Route index={true} path="/" element={<Home />} />
       <Route path="/product/:productId" element={<ProductDetails />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/login" element={<LoginPage />} />
     </Route>
   )
 );
