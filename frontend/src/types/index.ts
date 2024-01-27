@@ -11,3 +11,10 @@ export interface IProduct {
   numReviews: number;
   qty?: number;
 }
+
+export interface IUser {
+  _id: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}

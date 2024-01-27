@@ -3,7 +3,7 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IProduct } from "../../../types";
 import { updateCart } from "./updateCart";
-import { getFromLocalStorage } from "../../../utils/handleLocalstorage";
+import { getFromLocalStorage } from "../../../utils/handleLocalStorage";
 
 export interface CartState {
   cartItems: IProduct[];
