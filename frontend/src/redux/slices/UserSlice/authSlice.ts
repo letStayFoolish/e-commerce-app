@@ -3,10 +3,8 @@ import {
   getFromLocalStorage,
   setToLocalStorage,
 } from "../../../utils/handleLocalStorage";
-
-export type AuthState = {
-  userInfo: boolean | string | null;
-};
+import { type AuthState } from "./types";
+import { type IUser } from "../../../types";
 
 const initialState: AuthState = {
   userInfo: getFromLocalStorage("userInfo")
@@ -18,9 +16,9 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setCredentials(state: AuthState, action: PayloadAction<boolean>): void {
+    setCredentials(state: AuthState, action: PayloadAction<IUser>): void {
       state.userInfo = action.payload;
-      setToLocalStorage("userInfo", action.payload);
+      setToLocalStorage("userInfo", action.payload); // already includes JSON.stringify()
     },
 
     logout(state: AuthState) {
@@ -30,6 +28,6 @@ const authSlice = createSlice({
 });
 
 // export actions
-export const { setCredentials } = authSlice.actions;
+export const { setCredentials, logout } = authSlice.actions;
 
 export default authSlice.reducer;
