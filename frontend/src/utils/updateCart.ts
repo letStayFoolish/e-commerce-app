@@ -1,5 +1,5 @@
-import { type CartState } from ".";
-import { addDecimals } from "../../../utils/addDecimals";
+import { type CartState } from "../redux/slices/CartSlice";
+import { addDecimals } from "./addDecimals";
 
 export function updateCart(state: CartState) {
   // Calculate items price
