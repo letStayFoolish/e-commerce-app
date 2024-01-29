@@ -14,10 +14,10 @@ import { RootState } from "../../redux/store";
 import { logout } from "../../redux/slices/UserSlice/authSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useLogoutApiMutation } from "../../redux/slices/apiSlices/usersApi";
+import { useLogoutApiSliceMutation } from "../../redux/slices/apiSlices/usersApi";
 
 const Header = () => {
-  const [logoutApiCall] = useLogoutApiMutation();
+  const [logoutApiCall] = useLogoutApiSliceMutation();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

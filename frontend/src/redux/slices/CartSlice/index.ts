@@ -14,7 +14,7 @@ export interface CartState {
 }
 
 const initialState: CartState = getFromLocalStorage("cart")
-  ? JSON.parse(getFromLocalStorage("cart")!)
+  ? getFromLocalStorage("cart")!
   : { cartItems: [] };
 
 const cartSlice = createSlice({

@@ -7,7 +7,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "../../../constants";
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: BASE_URL,
+  baseUrl: BASE_URL, // in this case it is "" because we already set base URL in proxy!
 });
 
 export const apiSlice = createApi({

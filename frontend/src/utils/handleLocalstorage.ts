@@ -1,7 +1,9 @@
 import { type IUser } from "../types";
 
 export function getFromLocalStorage(key: string) {
-  return localStorage.getItem(key)!;
+  const dataInLocalStorage = localStorage.getItem(key)!;
+
+  return JSON.parse(dataInLocalStorage);
 }
 
 export function setToLocalStorage(
