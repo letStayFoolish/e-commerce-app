@@ -1,24 +1,31 @@
 import User from "../models/userModel.js";
-import asyncHandler from "../middleware/asyncHandler.js";
+import asyncHandler from "../middleware/asyncHandler.js"; // or use third-party library "express-async-handler"
 import generateToken from "../utils/generateToken.js";
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
 // @access  Public
 export const authUser = asyncHandler(async (req, res) => {
-  // Login user
-  const { email, password } = req.body;
+  // Login user --> authentication process:
+  const { email, password } = req.body; // email or username, depends of what you are using for login
 
-  const user = await User.findOne({ email });
+  const foundUser = await User.findOne({ email });
 
-  if (user && (await user.matchPasswords(password))) {
-    generateToken(res, user._id);
+  // Variant with match function written here inside controller
+  //                                        1             2
+  // const match = await bcrypt.compare(password, foundUser.password) // 1: password we received vs 2: password stored in the database
+
+  // Variant with match function written inside models
+  if (foundUser && (await foundUser.matchPasswords(password))) {
+    // Create access token
+    // Create refresh token
+    generateToken(res, foundUser._id);
 
     res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
+      _id: foundUser._id,
+      name: foundUser.name,
+      email: foundUser.email,
+      isAdmin: foundUser.isAdmin,
     });
   } else {
     res.status(401);
@@ -62,6 +69,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/logout
 // @access  Private
 export const logoutUser = asyncHandler(async (req, res) => {
+  // or just res.clearCookie("jwt", { httpOnly: true })
   res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),

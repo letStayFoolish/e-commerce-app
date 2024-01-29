@@ -41,6 +41,11 @@ const Cart = () => {
     <Row>
       <Col md={8}>
         <h1 style={{ marginBottom: "20px" }}>Shopping Cart</h1>
+
+        <Button onClick={() => navigate(-1)} className="btn btn-light my-3">
+          Go Back
+        </Button>
+
         {cartItems.length === 0 ? (
           <Message>
             Your cart is empty <Link to="/">Go back</Link>
@@ -93,7 +98,13 @@ const Cart = () => {
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Subtotal ({cartItems.reduce((a, c) => a + c.qty!, 0)})</h2>$
-              {cartItems.reduce((acc, item) => acc + item.qty! * item.price, 0)}
+              {cartItems.reduce((acc, item) => {
+                const result: string = (acc + item.qty! * item.price).toFixed(
+                  2
+                );
+
+                return Number(result);
+              }, 0)}
             </ListGroup.Item>
             <ListGroup.Item>
               <Button

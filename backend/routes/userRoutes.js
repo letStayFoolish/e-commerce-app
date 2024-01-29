@@ -15,9 +15,9 @@ import { protect, admin } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 // because of we use mongoose, we are working with async code so we need this middleware asyncHandler
-router.route("/").post(registerUser).get(protect, admin, getUsers);
-router.post("/logout", logoutUser);
+router.route("/").post(registerUser).get(protect, admin, getUsers); // protect stands for authorization
 router.post("/login", authUser);
+router.post("/logout", logoutUser);
 router
   .route("/profile")
   .get(protect, getUserProfile)
