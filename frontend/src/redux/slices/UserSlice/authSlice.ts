@@ -8,7 +8,7 @@ import { type IUser } from "../../../types";
 
 const initialState: AuthState = {
   userInfo: getFromLocalStorage("userInfo")
-    ? JSON.parse(getFromLocalStorage("userInfo"))
+    ? getFromLocalStorage("userInfo") // already parsed with in it
     : null,
 };
 

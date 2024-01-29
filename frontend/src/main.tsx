@@ -18,6 +18,7 @@ import Home from "./pages/Home/index.jsx";
 import ProductDetails from "./pages/ProductDetails/index.tsx";
 import Cart from "./pages/Cart/index.tsx";
 import LoginPage from "./pages/Auth/LoginPage.tsx";
+import RegisterPage from "./pages/Auth/RegisterPage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
       <Route path="/product/:productId" element={<ProductDetails />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
     </Route>
   )
 );
