@@ -232,7 +232,7 @@ h1,
   margin-bottom: 1.2rem;
   font-weight: 500;
   line-height: 1.2;
-  color: var(--dark-text-color, inherit);
+  color: var(--bs-heading-color, inherit);
 }
 
 h1,
@@ -3906,7 +3906,7 @@ fieldset:disabled .btn {
   padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
   font-size: var(--bs-nav-link-font-size);
   font-weight: var(--bs-nav-link-font-weight);
-  color: var(--secondary-background-color);
+  color: var(--bs-nav-link-color);
   text-decoration: none;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out;
@@ -4585,7 +4585,6 @@ fieldset:disabled .btn {
 .card-img-top,
 .card-img-bottom {
   width: 100%;
-  max-height: 450px;
 }
 
 .card-img,

@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "./asyncHandler.js";
 import User from "../models/userModel.js";
 
-// Protect routes:
+// Protect routes (Verifying tokens):
 const protect = asyncHandler(async (req, res, next) => {
   let token;
 
@@ -17,6 +17,8 @@ const protect = asyncHandler(async (req, res, next) => {
     } catch (error) {
       console.log(error);
       res.status(401);
+      // 401: (Unauthorized) status code indicates that the request has not been applied because it lacks valid authentication credentials for the target resource.
+      // 403: The HTTP status code 403 is used by the server to indicate that access to the requested resource is forbidden
       throw new Error("Not authorized, token failed");
     }
   } else {
