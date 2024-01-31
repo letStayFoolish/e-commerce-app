@@ -14,6 +14,7 @@ import { type ErrorApiSLice } from "../../redux/slices/apiSlices/types";
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [isValid, setIsValid] = useState<boolean>(true);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,17 +28,42 @@ const LoginPage = () => {
   const sp = new URLSearchParams(search);
   const redirect = sp.get("redirect") || "/";
 
+  const resetFields = () => {
+    setPassword("");
+    setEmail("");
+    setIsValid(false);
+  };
+
   useEffect(() => {
     if (userInfo) {
       navigate(redirect);
     }
   }, [userInfo, redirect, navigate]);
 
-  // const handleChangeEmail = (e: any) => {
-  //   setEmail(e.target.value);
+  const validateEmail = (value: string): boolean => {
+    // Implement your email validation logic here
+    // Example: Check if the email follows a certain pattern
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+  };
 
-  //   isValidEmail(email);
-  // };
+  const validatePassword = (value: string): boolean => {
+    // Implement your password validation logic here
+    // Example: Check if the password is at least 8 characters long
+    return value.length >= 8;
+  };
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    setEmail(newValue);
+    setIsValid(validateEmail(newValue) && validatePassword(password));
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    setPassword(newValue);
+    setIsValid(validateEmail(email) && validatePassword(newValue));
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -53,6 +79,7 @@ const LoginPage = () => {
       navigate(redirect);
 
       toast.success("You have logged in successfully");
+      resetFields();
     } catch (err) {
       console.log(err);
 
@@ -75,9 +102,17 @@ const LoginPage = () => {
             type="email"
             placeholder="Email Address"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleEmailChange}
             required
+            style={
+              !validateEmail(email)
+                ? { borderColor: "red" }
+                : { borderColor: "" }
+            }
           ></Form.Control>
+          {!validateEmail(email) && (
+            <span style={{ color: "red" }}>Enter your email</span>
+          )}
         </Form.Group>
         <Form.Group controlId="password">
           <Form.Label>Password</Form.Label>
@@ -85,16 +120,25 @@ const LoginPage = () => {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
             required
+            style={
+              !validatePassword(password)
+                ? { borderColor: "red" }
+                : { borderColor: "" }
+            }
           ></Form.Control>
+          {!validatePassword(password) && (
+            <span style={{ color: "red" }}>Enter your password</span>
+          )}
         </Form.Group>
 
         <Button
           type="submit"
           variant="primary"
           className="mt-2"
-          disabled={isLoading}
+          disabled={isLoading && !isValid}
+          style={!isValid ? { cursor: "not-allowed" } : { cursor: "pointer" }}
         >
           Sign In
         </Button>
