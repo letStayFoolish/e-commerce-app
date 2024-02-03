@@ -1,4 +1,5 @@
-import { type IUser } from "../types";
+import { CartState } from "../redux/slices/CartSlice/types";
+import { IProduct, type IUser } from "../types";
 
 export function getFromLocalStorage(key: string) {
   const dataInLocalStorage = localStorage.getItem(key)!;
@@ -9,7 +10,7 @@ export function getFromLocalStorage(key: string) {
 export function setToLocalStorage(
   key: string,
   // value: string | number | boolean
-  value: IUser
+  value: IUser | IProduct | CartState
 ) {
   localStorage.setItem(key, JSON.stringify(value));
 }

@@ -1,21 +1,17 @@
 // In here we are not dealing with endpoints and asynchronous requests, that is why we are using createSlice instead of createApi
 
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
+import {
+  getFromLocalStorage,
+  setToLocalStorage,
+  updateCart,
+} from "../../../utils";
+import { CartState, ShippingAddress } from "./types";
 import { IProduct } from "../../../types";
-import { updateCart } from "../../../utils/updateCart";
-import { getFromLocalStorage } from "../../../utils/handleLocalStorage";
-
-export interface CartState {
-  cartItems: IProduct[];
-  itemsPrice: string;
-  shippingPrice: string;
-  taxPrice: string;
-  totalPrice: string;
-}
 
 const initialState: CartState = getFromLocalStorage("cart")
   ? getFromLocalStorage("cart")!
-  : { cartItems: [] };
+  : { cartItems: [], shippingAddress: {}, paymentMethod: "PayPal" };
 
 const cartSlice = createSlice({
   name: "cart",
@@ -33,10 +29,7 @@ const cartSlice = createSlice({
       } else {
         state.cartItems = [...state.cartItems, item];
       }
-
-      updateCart(state);
-
-      localStorage.setItem("cart", JSON.stringify(state));
+      setToLocalStorage("cart", state);
     },
 
     removeItemFromCart(state: CartState, action: PayloadAction<string>) {
@@ -45,12 +38,18 @@ const cartSlice = createSlice({
       );
 
       updateCart(state);
-
-      localStorage.setItem("cart", JSON.stringify(state));
+    },
+    saveShippingAddress(
+      state: CartState,
+      action: PayloadAction<ShippingAddress>
+    ) {
+      state.shippingAddress = action.payload;
+      setToLocalStorage("cart", state);
     },
   },
 });
 
-export const { addToCart, removeItemFromCart } = cartSlice.actions;
+export const { addToCart, removeItemFromCart, saveShippingAddress } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;
