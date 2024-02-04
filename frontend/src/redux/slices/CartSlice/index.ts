@@ -1,15 +1,11 @@
 // In here we are not dealing with endpoints and asynchronous requests, that is why we are using createSlice instead of createApi
 
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import {
-  getFromLocalStorage,
-  setToLocalStorage,
-  updateCart,
-} from "../../../utils";
-import { CartState, ShippingAddress } from "./types";
+import { getFromLocalStorage, updateCart } from "../../../utils";
+import { ICartState, IShippingAddress } from "./types";
 import { IProduct } from "../../../types";
 
-const initialState: CartState = getFromLocalStorage("cart")
+const initialState: ICartState = getFromLocalStorage("cart")
   ? getFromLocalStorage("cart")!
   : { cartItems: [], shippingAddress: {}, paymentMethod: "PayPal" };
 
@@ -17,7 +13,7 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addToCart(state: CartState, action: PayloadAction<IProduct>) {
+    addToCart(state: ICartState, action: PayloadAction<IProduct>) {
       const item = action.payload;
 
       const existItem = state.cartItems.find((x) => x._id === item._id);
@@ -29,22 +25,25 @@ const cartSlice = createSlice({
       } else {
         state.cartItems = [...state.cartItems, item];
       }
-      setToLocalStorage("cart", state);
+
+      updateCart(state);
     },
 
-    removeItemFromCart(state: CartState, action: PayloadAction<string>) {
+    removeItemFromCart(state: ICartState, action: PayloadAction<string>) {
       state.cartItems = state.cartItems.filter(
         (item) => item._id !== action.payload
       );
 
       updateCart(state);
     },
+
     saveShippingAddress(
-      state: CartState,
-      action: PayloadAction<ShippingAddress>
+      state: ICartState,
+      action: PayloadAction<IShippingAddress>
     ) {
       state.shippingAddress = action.payload;
-      setToLocalStorage("cart", state);
+
+      updateCart(state);
     },
   },
 });
