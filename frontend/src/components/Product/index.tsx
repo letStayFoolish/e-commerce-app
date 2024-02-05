@@ -5,7 +5,7 @@ import { type ProductProps } from "./types";
 
 export const Product = ({ product }: ProductProps): JSX.Element => {
   return (
-    <Card className="my-3 p-3 card">
+    <Card className="my-3 p-3 card-coffee">
       <Link to={`/product/${product._id}`}>
         <Card.Img src={product.image} alt={product.description} variant="top" />
       </Link>

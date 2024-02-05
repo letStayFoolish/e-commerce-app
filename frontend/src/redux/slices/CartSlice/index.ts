@@ -2,7 +2,7 @@
 
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { getFromLocalStorage, updateCart } from "../../../utils";
-import { ICartState, IShippingAddress } from "./types";
+import type { ICartState, IShippingAddress } from "./types";
 import { IProduct } from "../../../types";
 
 const initialState: ICartState = getFromLocalStorage("cart")
@@ -45,10 +45,20 @@ const cartSlice = createSlice({
 
       updateCart(state);
     },
+
+    savePaymentMethod(state: ICartState, action: PayloadAction<string>) {
+      state.paymentMethod = action.payload;
+
+      updateCart(state);
+    },
   },
 });
 
-export const { addToCart, removeItemFromCart, saveShippingAddress } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  removeItemFromCart,
+  saveShippingAddress,
+  savePaymentMethod,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
