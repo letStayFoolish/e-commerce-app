@@ -2,8 +2,7 @@
 
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { getFromLocalStorage, updateCart } from "../../../utils";
-import type { ICartState, IShippingAddress } from "./types";
-import { IProduct } from "../../../types";
+import { ICartState, IProduct, IShippingAddress } from "../../../types";
 
 const initialState: ICartState = getFromLocalStorage("cart")
   ? getFromLocalStorage("cart")!
