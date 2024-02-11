@@ -1,12 +1,12 @@
 import { FormEvent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Button, Col, Form } from "react-bootstrap";
+import { RootState } from "../../redux/store";
 import FormContainer from "../../components/FormContainer";
 import CheckoutSteps from "../../components/CheckoutSteps";
-import { RootState } from "../../redux/store";
-import { type ICartState } from "../../redux/slices/CartSlice/types";
-import { Button, Col, Form } from "react-bootstrap";
 import { savePaymentMethod } from "../../redux/slices/CartSlice";
+import { type ICartState } from "../../redux/slices/CartSlice/types";
 
 const PaymentPage = () => {
   const [paymentMethod, setPaymentMethod] = useState<string>("");
@@ -21,7 +21,7 @@ const PaymentPage = () => {
     if (!shippingAddress) {
       navigate("/shipping");
     }
-  }, [shippingAddress, navigate]);
+  }, [paymentMethod, shippingAddress, navigate]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -42,31 +42,20 @@ const PaymentPage = () => {
 
           <Col>
             <Form.Check
-              type="radio"
               className="my-2"
+              type="radio"
               label="PayPal or Credit Card"
               id="PayPal"
               name="paymentMethod"
               value="PayPal"
-              checked
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setPaymentMethod(e.target.value)
-              }
-            ></Form.Check>
-            <Form.Check
-              type="radio"
-              className="my-2"
-              label="Second Variant"
-              id="Var2"
-              name="paymentMethod"
-              value="Variant 2"
+              checked={paymentMethod === "PayPal"}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setPaymentMethod(e.target.value)
               }
             ></Form.Check>
           </Col>
         </Form.Group>
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="primary" disabled={paymentMethod === ""}>
           Continue
         </Button>
       </Form>
