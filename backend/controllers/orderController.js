@@ -1,5 +1,7 @@
 import Order from "../models/orderModel.js";
+import Product from "../models/productModel.js";
 import asyncHandler from "../middleware/asyncHandler.js";
+import { calcPrice } from "../utils/calcPrice.js";
 
 // @desc    Create New Order
 // @route   POST /api/orders
@@ -15,16 +17,43 @@ export const addOrderItems = asyncHandler(async (req, res) => {
     totalPrice,
   } = req.body;
 
-  if (!orderItems) {
+  if (orderItems && orderItems.length === 0) {
     res.status(404);
     throw new Error("No order items");
   } else {
-    const order = new Order({
-      orderItems: orderItems.map((item) => ({
-        ...item,
-        product: item._id,
+    // NOTE: here we must assume that the prices from our client are incorrect.
+    // We must only trust the price of the item as it exists in
+    // our DB. This prevents a user paying whatever they want by hacking our client
+    // side code - https://gist.github.com/bushblade/725780e6043eaf59415fbaf6ca7376ff
+
+    // get the ordered items from our DB:
+    const itemsFromDB = await Product.find({
+      _id: { $in: orderItems.map((i) => i._id) },
+    });
+
+    // map over the order items and use the price from our items from database
+    const dbOrderItems = orderItems.map((itemFromClient) => {
+      const matchingItemOnDB = itemsFromDB.find(
+        (x) => x._id.toString() === itemFromClient._id
+      );
+
+      return {
+        ...itemFromClient,
+        product: itemFromClient._id,
+        price: matchingItemOnDB.price,
         _id: undefined,
-      })),
+      };
+    });
+
+    // calculate prices
+    const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
+      calcPrice(dbOrderItems);
+
+    const order = new Order({
+      // create Order items mapping through orderItems from localStorage, and defining flag product: item._id,
+      // to have the same ID as item, but also need to escape doubling IDs, by setting default _id to undefined
+      orderItems: dbOrderItems,
+      user: req.user._id,
       shippingAddress,
       paymentMethod,
       itemsPrice,

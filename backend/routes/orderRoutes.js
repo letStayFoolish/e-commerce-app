@@ -14,8 +14,8 @@ const router = express.Router();
 // because of we use mongoose, we are working with async code so we need this middleware asyncHandler
 router
   .route("/")
-  .get(protect, admin, getAllOrders)
-  .post(protect, addOrderItems);
+  .post(protect, addOrderItems)
+  .get(protect, admin, getAllOrders);
 router.route("/mine").get(protect, getMyOrders);
 router.route("/:id").get(protect, getOrderByID);
 router.route("/:id/pay").put(protect, updateOrderToPaid);
