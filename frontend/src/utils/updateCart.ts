@@ -10,11 +10,11 @@ export function updateCart(state: ICartState) {
   state.itemsPrice = addDecimals(itemsPrice);
 
   // Calculate shipping price (If order is over $100 then free, else $10 shipping)
-  const shippingPrice = itemsPrice > 100 ? 0 : 10;
+  const shippingPrice = !itemsPrice || itemsPrice > 100 ? 0 : 10;
   state.shippingPrice = addDecimals(shippingPrice);
 
   // Calculate tax price (15%)
-  const taxPrice = 0.15;
+  const taxPrice = 0.15 * itemsPrice;
   state.taxPrice = addDecimals(taxPrice);
 
   // Calculate total price
