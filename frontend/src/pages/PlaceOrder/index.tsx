@@ -8,16 +8,45 @@ import { useCreateOrderMutation } from "../../redux/slices/apiSlices/ordersApi";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import { clearCartItems } from "../../redux/slices/CartSlice";
+import { toast } from "react-toastify";
+import { addDecimals } from "../../utils";
 
+export interface IError {
+  status: number;
+  data: {
+    message: string;
+    stack: string;
+  };
+}
 const PlaceOrderPage = () => {
-  const cart = useSelector((state: RootState) => state.cartReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const cart = useSelector((state: RootState) => state.cartReducer);
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+
+  function handleClearInputFieldsWithDelay(delay = 500) {
+    const id = setTimeout(() => {
+      dispatch(clearCartItems());
+    }, delay);
+
+    return () => {
+      clearTimeout(id);
+    };
+  }
+
+  useEffect(() => {
+    if (!cart.shippingAddress.address) {
+      navigate("/shipping");
+    } else if (!cart.paymentMethod) {
+      navigate("/payment");
+    }
+  }, [cart.shippingAddress.address, cart.paymentMethod, navigate]);
 
   const placeOrderHandler = async () => {
     try {
       const result = await createOrder({
+        user: {},
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
@@ -27,32 +56,13 @@ const PlaceOrderPage = () => {
         totalPrice: cart.totalPrice,
       }).unwrap(); // --> since this return Promise, we do want to unwrap
 
-      //   navigate(`/order/${res._id}`)
-      dispatch(clearCartItems());
+      handleClearInputFieldsWithDelay();
+
+      navigate(`/order/${result._id}`);
     } catch (err) {
-      console.log(err);
+      toast.error(err);
     }
   };
-
-  useEffect(() => {
-    if (
-      !cart.shippingAddress.address ||
-      !cart.shippingAddress.city ||
-      !cart.shippingAddress.country ||
-      !cart.shippingAddress.postalCode
-    ) {
-      navigate("/shipping");
-    } else if (!cart.paymentMethod) {
-      navigate("/payment");
-    }
-  }, [
-    cart.shippingAddress.address,
-    cart.shippingAddress.city,
-    cart.shippingAddress.country,
-    cart.shippingAddress.postalCode,
-    cart.paymentMethod,
-    navigate,
-  ]);
 
   return (
     <>
@@ -64,7 +74,7 @@ const PlaceOrderPage = () => {
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
-                <strong>Address:</strong>
+                <strong>Address: </strong>
                 {cart.shippingAddress.address}, {cart.shippingAddress.city}{" "}
                 {cart.shippingAddress.postalCode},{" "}
                 {cart.shippingAddress.country}
@@ -73,7 +83,7 @@ const PlaceOrderPage = () => {
 
             <ListGroup.Item>
               <h2>Payment Method:</h2>
-              <strong>Method:</strong>
+              <strong>Method: </strong>
               {cart.paymentMethod}
             </ListGroup.Item>
 
@@ -98,7 +108,8 @@ const PlaceOrderPage = () => {
                           <Link to={`/product/${item._id}`}>{item.name}</Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty!} x {item.price} = ${item.qty! * item.price}
+                          {item.qty!} x {item.price} ={" "}
+                          {addDecimals(item.qty! * item.price)}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -144,9 +155,8 @@ const PlaceOrderPage = () => {
               </ListGroup.Item>
 
               <ListGroup.Item>
-                {/* {error && <Message variant="danger">{error}</Message>} */}
                 {error && (
-                  <Message variant="danger">{<div>ERROR</div>}</Message>
+                  <Message variant="danger">{error?.data?.message}</Message>
                 )}
               </ListGroup.Item>
 

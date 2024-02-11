@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Button, Form, FormGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { saveShippingAddress } from "../../redux/slices/CartSlice";
@@ -16,7 +16,7 @@ const ShippingPage = () => {
     shippingAddress.postalCode || ""
   );
   const [country, setCountry] = useState<string>(shippingAddress.country || "");
-
+  const [isValid, setIsValid] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -27,6 +27,14 @@ const ShippingPage = () => {
 
     navigate("/payment");
   };
+
+  useEffect(() => {
+    if (address && city && postalCode && country) {
+      setIsValid(true);
+    }
+    return;
+  }, [address, city, postalCode, country]);
+
   return (
     <>
       <h1>Shipping</h1>
@@ -73,7 +81,12 @@ const ShippingPage = () => {
           ></Form.Control>
         </FormGroup>
 
-        <Button type="submit" variant="primary" className="my-2">
+        <Button
+          type="submit"
+          variant="primary"
+          className="my-2"
+          disabled={!isValid}
+        >
           Continue
         </Button>
       </Form>
