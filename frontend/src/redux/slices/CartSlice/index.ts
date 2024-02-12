@@ -1,27 +1,18 @@
 // In here we are not dealing with endpoints and asynchronous requests, that is why we are using createSlice instead of createApi
 
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IProduct } from "../../../types";
-import { updateCart } from "../../../utils/updateCart";
-import { getFromLocalStorage } from "../../../utils/handleLocalStorage";
+import { getFromLocalStorage, updateCart } from "../../../utils";
+import { ICartState, IProduct, IShippingAddress } from "../../../types";
 
-export interface CartState {
-  cartItems: IProduct[];
-  itemsPrice: string;
-  shippingPrice: string;
-  taxPrice: string;
-  totalPrice: string;
-}
-
-const initialState: CartState = getFromLocalStorage("cart")
+const initialState: ICartState = getFromLocalStorage("cart")
   ? getFromLocalStorage("cart")!
-  : { cartItems: [] };
+  : { cartItems: [], shippingAddress: {}, paymentMethod: "PayPal" };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addToCart(state: CartState, action: PayloadAction<IProduct>) {
+    addToCart(state: ICartState, action: PayloadAction<IProduct>) {
       const item = action.payload;
 
       const existItem = state.cartItems.find((x) => x._id === item._id);
@@ -35,22 +26,51 @@ const cartSlice = createSlice({
       }
 
       updateCart(state);
-
-      localStorage.setItem("cart", JSON.stringify(state));
     },
 
-    removeItemFromCart(state: CartState, action: PayloadAction<string>) {
+    removeItemFromCart(state: ICartState, action: PayloadAction<string>) {
       state.cartItems = state.cartItems.filter(
         (item) => item._id !== action.payload
       );
 
       updateCart(state);
+    },
 
-      localStorage.setItem("cart", JSON.stringify(state));
+    saveShippingAddress(
+      state: ICartState,
+      action: PayloadAction<IShippingAddress>
+    ) {
+      state.shippingAddress = action.payload;
+
+      updateCart(state);
+    },
+
+    savePaymentMethod(state: ICartState, action: PayloadAction<string>) {
+      state.paymentMethod = action.payload;
+
+      updateCart(state);
+    },
+
+    clearCartItems(state: ICartState) {
+      state.cartItems = [];
+      state.shippingPrice = "";
+      state.paymentMethod = "";
+      state.shippingAddress.address = "";
+      state.shippingAddress.city = "";
+      state.shippingAddress.postalCode = "";
+      state.shippingAddress.country = "";
+
+      updateCart(state);
     },
   },
 });
 
-export const { addToCart, removeItemFromCart } = cartSlice.actions;
+export const {
+  addToCart,
+  removeItemFromCart,
+  saveShippingAddress,
+  savePaymentMethod,
+  clearCartItems,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -1,4 +1,4 @@
-import { type IUser } from "../types";
+import { ICartState, IProduct, type IUser } from "../types";
 
 export function getFromLocalStorage(key: string) {
   const dataInLocalStorage = localStorage.getItem(key)!;
@@ -9,7 +9,7 @@ export function getFromLocalStorage(key: string) {
 export function setToLocalStorage(
   key: string,
   // value: string | number | boolean
-  value: IUser
+  value: IUser | IProduct | ICartState
 ) {
   localStorage.setItem(key, JSON.stringify(value));
 }

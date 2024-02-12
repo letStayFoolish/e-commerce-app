@@ -1,25 +1,28 @@
-import { type CartState } from "../redux/slices/CartSlice";
-import { addDecimals } from "./addDecimals";
+import { ICartState } from "../types";
+import { addDecimals, setToLocalStorage } from "./";
 
-export function updateCart(state: CartState) {
+export function updateCart(state: ICartState) {
   // Calculate items price
-  state.itemsPrice = addDecimals(
-    state.cartItems.reduce((acc, item) => {
-      return acc + item.price * item.qty!;
-    }, 0)
-  );
+  const itemsPrice = state.cartItems.reduce((acc, item) => {
+    return acc + item.price * item.qty!;
+  }, 0);
+
+  state.itemsPrice = addDecimals(itemsPrice);
+
   // Calculate shipping price (If order is over $100 then free, else $10 shipping)
-  state.shippingPrice = addDecimals(Number(state.itemsPrice) > 100 ? 0 : 10);
+  const shippingPrice = !itemsPrice || itemsPrice > 100 ? 0 : 10;
+  state.shippingPrice = addDecimals(shippingPrice);
+
   // Calculate tax price (15%)
-  state.taxPrice = addDecimals(
-    Number((0.15 * Number(state.itemsPrice)).toFixed(2))
-  );
+  const taxPrice = 0.15 * itemsPrice;
+  state.taxPrice = addDecimals(taxPrice);
+
   // Calculate total price
-  state.totalPrice = (
-    Number(state.itemsPrice) +
-    Number(state.shippingPrice) +
-    Number(state.taxPrice)
-  ).toFixed(2);
+  const totalPrice = itemsPrice + shippingPrice + taxPrice;
+
+  state.totalPrice = addDecimals(totalPrice);
+
+  setToLocalStorage("cart", state);
 
   return state;
 }

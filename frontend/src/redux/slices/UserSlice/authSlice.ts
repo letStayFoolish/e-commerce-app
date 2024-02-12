@@ -1,8 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import {
-  getFromLocalStorage,
-  setToLocalStorage,
-} from "../../../utils/handleLocalStorage";
+import { getFromLocalStorage, setToLocalStorage } from "../../../utils";
 import { type AuthState } from "./types";
 import { type IUser } from "../../../types";
 
