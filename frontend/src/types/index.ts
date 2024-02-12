@@ -38,10 +38,12 @@ export interface IUser {
 }
 
 export interface IOrder {
-  _id: ObjectId;
+  _id: ObjectId | string;
   createdAt: string;
   isDelivered: boolean;
   isPaid: boolean;
+  paidAt?: string;
+  deliveredAt?: string;
   itemsPrice: number;
   orderItems: IOrderItem[];
   paymentMethod: "PayPal" | "";
