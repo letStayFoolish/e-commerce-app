@@ -44,15 +44,16 @@ export interface IOrder {
   isPaid: boolean;
   paidAt?: string;
   deliveredAt?: string;
-  itemsPrice: number;
-  orderItems: IOrderItem[];
-  paymentMethod: "PayPal" | "";
+  itemsPrice: string;
+  orderItems: IProduct[];
+  paymentMethod: "PayPal" | "" | string;
   shippingAddress: IShippingAddress;
   shippingPrice: string;
   taxPrice: string;
   totalPrice: string;
   updatedAt: string;
   user: IUser;
+  // paymentResult: PaymentResult;
 }
 
 export interface IOrderItem {
@@ -62,4 +63,11 @@ export interface IOrderItem {
   price: number;
   product: string;
   qty: number;
+}
+
+export interface PaymentResult {
+  id: string | ObjectId;
+  status: number;
+  update_time: string;
+  email_address: string;
 }

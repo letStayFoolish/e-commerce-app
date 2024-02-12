@@ -106,17 +106,15 @@ export const updateOrderToPaid = asyncHandler(async (req, res) => {
   try {
     const order = await Order.findById(req.params.id); // url: .../order/:id
 
-    console.log("ORDER: ", order);
-
     if (order) {
-      (order.isPaid = true),
-        (order.paidAt = Date.now()),
-        (order.paymentResult = {
-          id: req.body.id, // _id
-          status: req.body.status,
-          update_time: req.body.update_time,
-          email_address: req.body.payer.email_address,
-        });
+      (order.isPaid = true), (order.paidAt = Date.now());
+      // If you are using PayPal API:
+      // (order.paymentResult = {
+      //   id: req.body.id,
+      //   status: req.body.status,
+      //   update_time: req.body.update_time,
+      //   email_address: req.body.user.email_address,
+      // });
 
       const updateOrder = await order.save();
 
