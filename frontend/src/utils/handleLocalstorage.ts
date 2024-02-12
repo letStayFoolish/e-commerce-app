@@ -1,5 +1,4 @@
-import { ICartState } from "../redux/slices/CartSlice/types";
-import { IProduct, type IUser } from "../types";
+import { ICartState, IProduct, type IUser } from "../types";
 
 export function getFromLocalStorage(key: string) {
   const dataInLocalStorage = localStorage.getItem(key)!;

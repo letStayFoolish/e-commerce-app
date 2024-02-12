@@ -6,7 +6,7 @@ import type { IOrder } from "../../../../types";
 
 export const ordersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    createOrder: builder.mutation<IOrder, IOrder>({
+    createOrder: builder.mutation<IOrder, Omit<IOrder, "_id" | "user">>({
       query: (order) => ({
         url: ORDERS_URL,
         method: "POST",

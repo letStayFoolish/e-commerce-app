@@ -8,6 +8,8 @@ import Message from "../../components/Message";
 import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { addDecimals } from "../../utils";
+import { handleErrorMessage } from "../../utils/handleErrorMessageFromRTK";
+import { IProduct } from "../../types";
 
 const OrderPage = () => {
   const { id: orderID = "" } = useParams();
@@ -18,6 +20,8 @@ const OrderPage = () => {
     isLoading,
     error,
   } = useGetOrderDetailsQuery(orderID as string);
+  const errorMessage = handleErrorMessage(error!);
+
   // In order to achieve complete granular control over re-fetching data,
   // you can use the refetch function returned as a result property from a useQuery or useQuerySubscription hook.
   // Calling the refetch function will force refetch the associated query.
@@ -36,7 +40,7 @@ const OrderPage = () => {
   return isLoading ? (
     <Loader />
   ) : error ? (
-    <Message variant="danger">{error?.data?.message || error}</Message>
+    <Message variant="danger">{errorMessage}</Message>
   ) : (
     order && (
       <>
@@ -87,7 +91,7 @@ const OrderPage = () => {
               <ListGroup.Item>
                 <h2>Order Items</h2>
 
-                {order.orderItems.map((item, index: number) => (
+                {order.orderItems.map((item: IProduct, index: number) => (
                   <ListGroup.Item key={index}>
                     <Row>
                       <Col md={2}>

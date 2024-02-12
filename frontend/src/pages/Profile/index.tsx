@@ -10,6 +10,8 @@ import { useGetMyOrdersQueryQuery } from "../../redux/slices/apiSlices/ordersApi
 import Message from "../../components/Message";
 import { FaTimes } from "react-icons/fa";
 import { LinkContainer } from "react-router-bootstrap";
+import { handleErrorMessage } from "../../utils/handleErrorMessageFromRTK";
+import { addDecimals } from "../../utils";
 
 const ProfilePage = () => {
   const [name, setName] = useState<string>("");
@@ -27,6 +29,7 @@ const ProfilePage = () => {
     isLoading,
     error,
   } = useGetMyOrdersQueryQuery(undefined);
+  const errorMessage = handleErrorMessage(error!);
 
   useEffect(() => {
     if (userInfo) {
@@ -36,8 +39,11 @@ const ProfilePage = () => {
   }, [userInfo, setName, setEmail]);
 
   useEffect(() => {
+    if (!orders) {
+      return;
+    }
     refetch();
-  }, [orders]);
+  }, [orders, refetch]);
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
@@ -119,9 +125,7 @@ const ProfilePage = () => {
         {isLoading ? (
           <Loader />
         ) : error ? (
-          <Message variant="danger">
-            {error?.data?.message || error.error}
-          </Message>
+          <Message variant="danger">{errorMessage}</Message>
         ) : (
           <Table striped hover responsive className="table-sm">
             <thead>
@@ -138,18 +142,18 @@ const ProfilePage = () => {
               {orders!.map((order) => (
                 <tr key={order._id.toString()}>
                   <td>{order._id.toString()}</td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
-                  <td>{order.totalPrice}</td>
+                  <td>{order.createdAt!.substring(0, 10)}</td>
+                  <td>${addDecimals(Number(order.totalPrice))}</td>
                   <td>
                     {order.isPaid ? (
-                      <td>{order.paidAt!.substring(0, 10)}</td>
+                      <div>{order.paidAt!.substring(0, 10)}</div>
                     ) : (
                       <FaTimes style={{ color: "red" }} />
                     )}
                   </td>
                   <td>
                     {order.isDelivered ? (
-                      <td>{order.deliveredAt!.substring(0, 10)}</td>
+                      <div>{order.deliveredAt!.substring(0, 10)}</div>
                     ) : (
                       <FaTimes style={{ color: "red" }} />
                     )}

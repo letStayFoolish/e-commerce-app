@@ -6,7 +6,7 @@ import { RootState } from "../../redux/store";
 import FormContainer from "../../components/FormContainer";
 import CheckoutSteps from "../../components/CheckoutSteps";
 import { savePaymentMethod } from "../../redux/slices/CartSlice";
-import { type ICartState } from "../../redux/slices/CartSlice/types";
+import { ICartState } from "../../types";
 
 const PaymentPage = () => {
   const [paymentMethod, setPaymentMethod] = useState<string>("");
