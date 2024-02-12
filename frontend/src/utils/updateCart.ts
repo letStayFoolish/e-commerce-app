@@ -1,4 +1,4 @@
-import { ICartState } from "../redux/slices/CartSlice/types";
+import { ICartState } from "../types";
 import { addDecimals, setToLocalStorage } from "./";
 
 export function updateCart(state: ICartState) {

@@ -10,6 +10,7 @@ import Loader from "../../components/Loader";
 import { clearCartItems } from "../../redux/slices/CartSlice";
 import { toast } from "react-toastify";
 import { addDecimals } from "../../utils";
+import { handleErrorMessage } from "../../utils/handleErrorMessageFromRTK";
 
 export interface IError {
   status: number;
@@ -23,7 +24,10 @@ const PlaceOrderPage = () => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state: RootState) => state.cartReducer);
+
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+
+  const errorMessage = handleErrorMessage(error!);
 
   function handleClearInputFieldsWithDelay(delay = 500) {
     const id = setTimeout(() => {
@@ -46,7 +50,6 @@ const PlaceOrderPage = () => {
   const placeOrderHandler = async () => {
     try {
       const result = await createOrder({
-        user: {},
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
@@ -155,9 +158,7 @@ const PlaceOrderPage = () => {
               </ListGroup.Item>
 
               <ListGroup.Item>
-                {error && (
-                  <Message variant="danger">{error?.data?.message}</Message>
-                )}
+                {error && <Message variant="danger">{errorMessage}</Message>}
               </ListGroup.Item>
 
               <ListGroup.Item>

@@ -39,19 +39,20 @@ export interface IUser {
 
 export interface IOrder {
   _id: ObjectId | string;
-  createdAt: string;
-  isDelivered: boolean;
-  isPaid: boolean;
+  orderItems: IProduct[];
+  shippingAddress: IShippingAddress;
+  paymentMethod: "PayPal" | "" | string;
+  itemsPrice: string;
+  taxPrice: string;
+  shippingPrice: string;
+  totalPrice: string;
+
+  createdAt?: string;
+  isDelivered?: boolean;
+  isPaid?: boolean;
   paidAt?: string;
   deliveredAt?: string;
-  itemsPrice: string;
-  orderItems: IProduct[];
-  paymentMethod: "PayPal" | "" | string;
-  shippingAddress: IShippingAddress;
-  shippingPrice: string;
-  taxPrice: string;
-  totalPrice: string;
-  updatedAt: string;
+  updatedAt?: string;
   user: IUser;
   // paymentResult: PaymentResult;
 }
