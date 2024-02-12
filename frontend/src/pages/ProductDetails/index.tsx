@@ -50,7 +50,14 @@ const ProductDetails = (): JSX.Element => {
 
   return (
     <>
-      <Link to="/" className="btn btn-light my-3">
+      <Link
+        to={".."}
+        onClick={(e) => {
+          e.preventDefault();
+          navigate(-1);
+        }}
+        className="btn btn-light my-3"
+      >
         Go Back
       </Link>
 
