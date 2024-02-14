@@ -88,8 +88,8 @@
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
   --bs-body-color: #7b8a8b;
-  --bs-emphasis-color: #000;
-  --bs-emphasis-color-rgb: 0, 0, 0;
+  --bs-emphasis-color: rgb(221, 216, 212);
+  --bs-emphasis-color-rgb: rgb(221, 216, 212);
   --bs-secondary-color: rgba(123, 138, 139, 0.75);
   --bs-secondary-color-rgb: 123, 138, 139;
   --bs-secondary-bg: #bdcecf;
@@ -4021,7 +4021,7 @@ fieldset:disabled .btn {
   --bs-navbar-color: rgba(var(--bs-emphasis-color-rgb), 0.65);
   --bs-navbar-hover-color: rgba(var(--bs-emphasis-color-rgb), 0.8);
   --bs-navbar-disabled-color: rgba(var(--bs-emphasis-color-rgb), 0.3);
-  --bs-navbar-active-color: rgba(var(--bs-emphasis-color-rgb), 1);
+  --bs-navbar-active-color: var(--bs-emphasis-color-rgb);
   --bs-navbar-brand-padding-y: 0.3125rem;
   --bs-navbar-brand-margin-end: 1rem;
   --bs-navbar-brand-font-size: 1.25rem;
