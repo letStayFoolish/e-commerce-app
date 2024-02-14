@@ -232,7 +232,7 @@ h1,
   margin-bottom: 1.2rem;
   font-weight: 500;
   line-height: 1.2;
-  color: var(--bs-heading-color, inherit);
+  color: var(--main-background-color);
 }
 
 h1,
@@ -3021,7 +3021,7 @@ textarea.form-control.is-invalid {
   --bs-btn-font-weight: 400;
   --bs-btn-line-height: 1.5;
   --bs-btn-color: #7b8a8b;
-  --bs-btn-bg: transparent;
+  --bs-btn-bg: rgb(77, 54,38);
   --bs-btn-border-width: var(--bs-border-width);
   --bs-btn-border-color: transparent;
   --bs-btn-border-radius: 0.375rem;
