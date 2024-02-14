@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   useGetOrderDetailsQuery,
   usePayOrderMutation,
@@ -12,6 +12,7 @@ import { handleErrorMessage } from "../../utils/handleErrorMessageFromRTK";
 import { IProduct } from "../../types";
 
 const OrderPage = () => {
+  const navigate = useNavigate();
   const { id: orderID = "" } = useParams();
 
   const {
@@ -45,6 +46,10 @@ const OrderPage = () => {
     order && (
       <>
         <h1>Order {order._id.toString()}</h1>
+
+        <Button onClick={() => navigate(-1)} className="btn btn-light my-3">
+          Go Back
+        </Button>
 
         <Row>
           <Col md={8}>
