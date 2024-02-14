@@ -11,6 +11,7 @@ import { clearCartItems } from "../../redux/slices/CartSlice";
 import { toast } from "react-toastify";
 import { addDecimals } from "../../utils";
 import { handleErrorMessage } from "../../utils/handleErrorMessageFromRTK";
+import { IOrderItem } from "../../types";
 
 export interface IError {
   status: number;
@@ -49,8 +50,17 @@ const PlaceOrderPage = () => {
 
   const placeOrderHandler = async () => {
     try {
+      const orderItems: IOrderItem[] = cart.cartItems.map((item) => ({
+        _id: item._id,
+        image: item.image,
+        name: item.name,
+        price: item.price,
+        product: item._id,
+        qty: item.qty,
+      }));
+
       const result = await createOrder({
-        orderItems: cart.cartItems,
+        orderItems: orderItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
