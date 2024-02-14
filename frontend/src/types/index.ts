@@ -10,7 +10,7 @@ export interface ICartState {
   paymentMethod: string;
 }
 export interface IProduct {
-  _id: string;
+  _id: ObjectId; // ObjectId
   name: string;
   image: string;
   description: string;
@@ -38,8 +38,8 @@ export interface IUser {
 }
 
 export interface IOrder {
-  _id: ObjectId | string;
-  orderItems: IProduct[];
+  _id: ObjectId;
+  orderItems: IOrderItem[];
   shippingAddress: IShippingAddress;
   paymentMethod: "PayPal" | "" | string;
   itemsPrice: string;
@@ -62,8 +62,8 @@ export interface IOrderItem {
   image: string;
   name: string;
   price: number;
-  product: string;
-  qty: number;
+  product: ObjectId;
+  qty?: number;
 }
 
 export interface PaymentResult {

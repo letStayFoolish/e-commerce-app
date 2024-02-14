@@ -30,7 +30,7 @@ const cartSlice = createSlice({
 
     removeItemFromCart(state: ICartState, action: PayloadAction<string>) {
       state.cartItems = state.cartItems.filter(
-        (item) => item._id !== action.payload
+        (item) => item._id.toString() !== action.payload
       );
 
       updateCart(state);

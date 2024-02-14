@@ -9,7 +9,6 @@ import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { addDecimals } from "../../utils";
 import { handleErrorMessage } from "../../utils/handleErrorMessageFromRTK";
-import { IProduct } from "../../types";
 
 const OrderPage = () => {
   const navigate = useNavigate();
@@ -96,22 +95,32 @@ const OrderPage = () => {
               <ListGroup.Item>
                 <h2>Order Items</h2>
 
-                {order.orderItems.map((item: IProduct, index: number) => (
-                  <ListGroup.Item key={index}>
-                    <Row>
-                      <Col md={2}>
-                        <Image src={item.image} alt={item.name} fluid rounded />
-                      </Col>
-                      <Col>
-                        <Link to={`/product/${item._id}`}>{item.name}</Link>
-                      </Col>
-                      <Col md={4}>
-                        {item.qty!} x {item.price} ={" "}
-                        {addDecimals(item.qty! * item.price)}
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
-                ))}
+                {order.orderItems.map(
+                  (item) =>
+                    item && (
+                      <ListGroup.Item key={item._id.toString()}>
+                        <Row>
+                          <Col md={2}>
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fluid
+                              rounded
+                            />
+                          </Col>
+                          <Col>
+                            <Link to={`/product/${item.product}`}>
+                              {item.name}
+                            </Link>
+                          </Col>
+                          <Col md={4}>
+                            {item.qty!} x {item.price} ={" "}
+                            {addDecimals(item.qty! * item.price)}
+                          </Col>
+                        </Row>
+                      </ListGroup.Item>
+                    )
+                )}
               </ListGroup.Item>
             </ListGroup>
           </Col>

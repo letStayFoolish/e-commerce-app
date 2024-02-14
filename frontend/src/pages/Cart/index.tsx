@@ -53,7 +53,7 @@ const Cart = () => {
         ) : (
           <ListGroup variant="flush">
             {cartItems.map((item) => (
-              <ListGroup.Item key={item._id}>
+              <ListGroup.Item key={item._id.toString()}>
                 <Row>
                   <Col md={2}>
                     <Image src={item.image} alt={item.name} fluid rounded />
@@ -82,7 +82,9 @@ const Cart = () => {
                     <Button
                       type="button"
                       variant="light"
-                      onClick={() => handleRemoveItemFromCart(item._id)}
+                      onClick={() =>
+                        handleRemoveItemFromCart(item._id.toString())
+                      }
                     >
                       <FaTrash />
                     </Button>
