@@ -1,5 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
+  useDeliverOrderMutation,
   useGetOrderDetailsQuery,
   usePayOrderMutation,
 } from "../../redux/slices/apiSlices/ordersApi";
@@ -9,6 +11,7 @@ import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { addDecimals } from "../../utils";
 import { handleErrorMessage } from "../../utils/handleErrorMessageFromRTK";
+import type { RootState } from "../../redux/store";
 
 const OrderPage = () => {
   const navigate = useNavigate();
@@ -27,6 +30,11 @@ const OrderPage = () => {
   // Calling the refetch function will force refetch the associated query.
 
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+  const { userInfo } = useSelector(
+    (state: RootState) => state.authSliceReducer
+  );
+  const [updateOrderDeliverStatus, { isLoading: loadingDeliver }] =
+    useDeliverOrderMutation();
 
   const onApproveTest = async () => {
     if (!orderID || !order) {
@@ -35,6 +43,21 @@ const OrderPage = () => {
     await payOrder({ orderID, details: order });
     refetch();
     toast.success("Payment successful");
+  };
+
+  const deliverOrderHandler = async () => {
+    if (!orderID) {
+      return;
+    }
+
+    try {
+      await updateOrderDeliverStatus(orderID);
+
+      refetch();
+      toast.success("Order status updated to delivered");
+    } catch (err) {
+      toast.error(errorMessage);
+    }
   };
 
   return isLoading ? (
@@ -135,19 +158,19 @@ const OrderPage = () => {
                 <ListGroup.Item>
                   <Row>
                     <Col>Items</Col>
-                    <Col>${order.itemsPrice}</Col>
+                    <Col>${addDecimals(Number(order.itemsPrice))}</Col>
                   </Row>
                   <Row>
                     <Col>Shipping</Col>
-                    <Col>${order.shippingPrice}</Col>
+                    <Col>${addDecimals(Number(order.shippingPrice))}</Col>
                   </Row>
                   <Row>
                     <Col>Tax</Col>
-                    <Col>${order.taxPrice}</Col>
+                    <Col>${addDecimals(Number(order.taxPrice))}</Col>
                   </Row>
                   <Row>
                     <Col>Total</Col>
-                    <Col>${order.totalPrice}</Col>
+                    <Col>${addDecimals(Number(order.totalPrice))}</Col>
                   </Row>
                 </ListGroup.Item>
                 {!order.isPaid && (
@@ -164,8 +187,21 @@ const OrderPage = () => {
                   </ListGroup.Item>
                 )}
                 {/*  PAY ORDER PLACEHOLDER  */}
-                {/*  MARK AS DELIVERED PLACEHOLDER */}
-                {!order.isDelivered && <ListGroup.Item></ListGroup.Item>}
+                {loadingDeliver && <Loader />}
+                {userInfo &&
+                  userInfo.isAdmin &&
+                  order.isPaid &&
+                  !order.isDelivered && (
+                    <ListGroup.Item>
+                      <Button
+                        type="button"
+                        className="btn btn-block"
+                        onClick={deliverOrderHandler}
+                      >
+                        Mark As Delivered
+                      </Button>
+                    </ListGroup.Item>
+                  )}
               </ListGroup>
             </Card>
           </Col>
