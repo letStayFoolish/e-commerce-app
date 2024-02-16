@@ -14,7 +14,7 @@ export interface IProduct {
   name: string;
   image: string;
   description: string;
-  brand: string;
+  origin: string;
   category: string;
   price: number;
   countInStock: number;

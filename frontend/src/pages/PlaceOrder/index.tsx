@@ -27,6 +27,9 @@ const PlaceOrderPage = () => {
   const cart = useSelector((state: RootState) => state.cartReducer);
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+  const { userInfo } = useSelector(
+    (state: RootState) => state.authSliceReducer
+  );
 
   const errorMessage = handleErrorMessage(error!);
 
@@ -67,6 +70,7 @@ const PlaceOrderPage = () => {
         taxPrice: cart.taxPrice,
         shippingPrice: cart.shippingPrice,
         totalPrice: cart.totalPrice,
+        user: userInfo, // TODO: Add user information along with new order
       }).unwrap(); // --> since this return Promise, we do want to unwrap
 
       handleClearInputFieldsWithDelay();
