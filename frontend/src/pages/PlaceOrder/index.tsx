@@ -52,6 +52,8 @@ const PlaceOrderPage = () => {
   }, [cart.shippingAddress.address, cart.paymentMethod, navigate]);
 
   const placeOrderHandler = async () => {
+    if (!userInfo) return;
+
     try {
       const orderItems: IOrderItem[] = cart.cartItems.map((item) => ({
         _id: item._id,
@@ -70,7 +72,7 @@ const PlaceOrderPage = () => {
         taxPrice: cart.taxPrice,
         shippingPrice: cart.shippingPrice,
         totalPrice: cart.totalPrice,
-        user: userInfo, // TODO: Add user information along with new order
+        user: userInfo.name, // TODO: Add user information along with new order
       }).unwrap(); // --> since this return Promise, we do want to unwrap
 
       handleClearInputFieldsWithDelay();
