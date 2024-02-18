@@ -69,6 +69,7 @@ const ProductPage = () => {
                 <th>NAME</th>
                 <th>PRICE</th>
                 <th>ORIGIN</th>
+                <th>IN STOCK</th>
                 <th></th>
               </tr>
             </thead>
@@ -80,6 +81,7 @@ const ProductPage = () => {
                     <td>{product.name}</td>
                     <td>${addDecimals(Number(product.price))}</td>
                     <td>{product.origin}</td>
+                    <td>{product.countInStock}</td>
                     <td>
                       <LinkContainer to={`/admin/product/${product._id}/edit`}>
                         <Button variant="light" className="btn-sm mx-2">
