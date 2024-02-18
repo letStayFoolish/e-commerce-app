@@ -13,13 +13,13 @@ export interface IProduct {
   _id: ObjectId; // ObjectId
   name: string;
   image: string;
-  description: string;
   origin: string;
-  category: string;
+  description: string;
+  numReviews: number;
   price: number;
   countInStock: number;
   rating: number;
-  numReviews: number;
+  category: string;
   qty?: number;
 }
 
@@ -38,7 +38,7 @@ export interface IUser {
 }
 
 export interface IOrder {
-  _id: ObjectId;
+  _id?: ObjectId;
   orderItems: IOrderItem[];
   shippingAddress: IShippingAddress;
   paymentMethod: "PayPal" | "" | string;
@@ -53,7 +53,7 @@ export interface IOrder {
   paidAt?: string;
   deliveredAt?: string;
   updatedAt?: string;
-  user: IUser;
+  user: string;
   // paymentResult: PaymentResult;
 }
 

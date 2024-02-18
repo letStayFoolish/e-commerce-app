@@ -5,16 +5,34 @@ import { handleErrorMessage } from "../../../utils/handleErrorMessageFromRTK";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { LinkContainer } from "react-router-bootstrap";
 import { addDecimals } from "../../../utils";
-import { useGetProductsQuery } from "../../../redux/slices/apiSlices/productApi";
+import {
+  useCreateProductMutation,
+  useGetProductsQuery,
+} from "../../../redux/slices/apiSlices/productApi";
 import { ObjectId } from "mongoose";
+import { toast } from "react-toastify";
 
 const ProductPage = () => {
-  const { data: products, isLoading, error } = useGetProductsQuery();
+  const { data: products, refetch, isLoading, error } = useGetProductsQuery();
+  const [createProduct, { isLoading: loadingNewProduct }] =
+    useCreateProductMutation();
 
   const errorMessage = handleErrorMessage(error!);
 
   const deleteHandler = (productId: ObjectId): void => {
     console.log(productId);
+  };
+
+  const createProductHandler = async () => {
+    if (window.confirm("Are you sure you want to create a new product?")) {
+      try {
+        await createProduct();
+        refetch();
+        toast.success("Product successfully created");
+      } catch (err) {
+        toast.error(errorMessage);
+      }
+    }
   };
 
   console.log("Product: ", products);
@@ -26,11 +44,17 @@ const ProductPage = () => {
           <h1>Products</h1>
         </Col>
         <Col>
-          <Button type="button" className="btn-sm m-3">
+          <Button
+            onClick={createProductHandler}
+            type="button"
+            className="btn-sm m-3"
+          >
             <FaEdit /> Create Product
           </Button>
         </Col>
       </Row>
+
+      {loadingNewProduct && <Loader />}
 
       {isLoading ? (
         <Loader />
