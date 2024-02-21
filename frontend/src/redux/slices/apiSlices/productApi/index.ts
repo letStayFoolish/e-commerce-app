@@ -1,6 +1,7 @@
 import { apiSlice } from "../index";
 import { PRODUCTS_URL } from "../../../../constants";
 import { type IProduct } from "../../../../types";
+import { ObjectId } from "mongoose";
 
 // slice where we have endpoints where we are dealing with asynchronous request
 
@@ -15,7 +16,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       //   providesTags: ["Product"],
     }),
 
-    getProductDetails: builder.query({
+    getProductDetails: builder.query<IProduct, ObjectId | string>({
       query: (productId) => ({
         url: `${PRODUCTS_URL}/${productId}`,
       }),
@@ -28,7 +29,16 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         url: PRODUCTS_URL,
         method: "POST",
       }),
-      invalidatesTags: ["Product"],
+      invalidatesTags: ["Product"], // stop it from being cached - so we have fresh data. Without this, we would have to reload the page
+    }),
+
+    updateProduct: builder.mutation<IProduct[], Partial<IProduct>>({
+      query: (product) => ({
+        url: `${PRODUCTS_URL}/${product._id}`,
+        method: "PUT",
+        body: product,
+      }),
+      invalidatesTags: ["Product"], // clear the cache
     }),
   }),
 });
@@ -37,4 +47,5 @@ export const {
   useGetProductsQuery,
   useGetProductDetailsQuery,
   useCreateProductMutation,
+  useUpdateProductMutation,
 } = productsApiSlice;
