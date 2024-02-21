@@ -140,8 +140,8 @@ const ProfilePage = () => {
             </thead>
             <tbody>
               {orders!.map((order) => (
-                <tr key={order._id.toString()}>
-                  <td>{order._id.toString()}</td>
+                <tr key={order._id!.toString()}>
+                  <td>{order._id!.toString()}</td>
                   <td>{order.createdAt!.substring(0, 10)}</td>
                   <td>${addDecimals(Number(order.totalPrice))}</td>
                   <td>

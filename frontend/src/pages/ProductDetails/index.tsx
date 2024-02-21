@@ -29,7 +29,7 @@ const ProductDetails = (): JSX.Element => {
     data: product,
     isLoading,
     error,
-  } = useGetProductDetailsQuery(productId);
+  } = useGetProductDetailsQuery(productId!);
 
   if (isLoading) {
     return <Loader />;
@@ -102,7 +102,7 @@ const ProductDetails = (): JSX.Element => {
                   </Col>
                 </Row>
               </ListGroup.Item>
-              {product.countInStock > 0 && (
+              {product && product.countInStock > 0 && (
                 <ListGroup.Item>
                   <Row>
                     <Col>Qty: </Col>
@@ -129,7 +129,7 @@ const ProductDetails = (): JSX.Element => {
                   className="btn btn-block"
                   type="button"
                   disabled={product?.countInStock === 0}
-                  onClick={() => handleAddToCart(product)}
+                  onClick={() => handleAddToCart(product!)}
                 >
                   Add To Cart
                 </Button>
