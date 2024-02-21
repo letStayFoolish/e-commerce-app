@@ -5,7 +5,11 @@ import { useGetProductDetailsQuery } from "../../redux/slices/apiSlices/productA
 export const Product = () => {
   const { productId: productId } = useParams();
 
-  const { data: product } = useGetProductDetailsQuery(productId);
+  const { data: product } = useGetProductDetailsQuery(productId!);
+
+  if (!product) {
+    return;
+  }
 
   return (
     <>

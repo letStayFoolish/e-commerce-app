@@ -13,8 +13,10 @@ import { ObjectId } from "mongoose";
 import { toast } from "react-toastify";
 
 const ProductPage = () => {
+  // API Query:
   const { data: products, refetch, isLoading, error } = useGetProductsQuery();
-  const [createProduct, { isLoading: loadingNewProduct }] =
+  // API Mutation:
+  const [createProduct, { isLoading: loadingCreate }] =
     useCreateProductMutation();
 
   const errorMessage = handleErrorMessage(error!);
@@ -40,10 +42,10 @@ const ProductPage = () => {
   return (
     <>
       <Row>
-        <Col md={4}>
+        <Col>
           <h1>Products</h1>
         </Col>
-        <Col>
+        <Col className="text-end">
           <Button
             onClick={createProductHandler}
             type="button"
@@ -54,7 +56,7 @@ const ProductPage = () => {
         </Col>
       </Row>
 
-      {loadingNewProduct && <Loader />}
+      {loadingCreate && <Loader />}
 
       {isLoading ? (
         <Loader />
@@ -89,7 +91,7 @@ const ProductPage = () => {
                         </Button>
                       </LinkContainer>
                       <Button onClick={() => deleteHandler(product._id)}>
-                        <FaTrash />
+                        <FaTrash style={{ color: "white" }} />
                       </Button>
                     </td>
                   </tr>
