@@ -11,6 +11,7 @@ export interface ICartState {
 }
 export interface IProduct {
   _id: ObjectId; // ObjectId
+  user: IUser;
   name: string;
   image: string;
   origin: string;
@@ -53,7 +54,7 @@ export interface IOrder {
   paidAt?: string;
   deliveredAt?: string;
   updatedAt?: string;
-  user: string;
+  user: IUser;
   // paymentResult: PaymentResult;
 }
 

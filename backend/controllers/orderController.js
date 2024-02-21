@@ -15,6 +15,7 @@ export const addOrderItems = asyncHandler(async (req, res) => {
     taxPrice,
     shippingPrice,
     totalPrice,
+    user,
   } = req.body;
 
   if (orderItems && orderItems.length === 0) {
@@ -53,7 +54,7 @@ export const addOrderItems = asyncHandler(async (req, res) => {
       // create Order items mapping through orderItems from localStorage, and defining flag product: item._id,
       // to have the same ID as item, but also need to escape doubling IDs, by setting default _id to undefined
       orderItems: dbOrderItems,
-      user: req.user, // TODO: Add user information along with new order
+      user,
       shippingAddress,
       paymentMethod,
       itemsPrice,

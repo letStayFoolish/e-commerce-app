@@ -12,6 +12,8 @@ const OrderListPage = () => {
 
   const errorMessage = handleErrorMessage(error!);
 
+  console.log("ORDERS: ", orders);
+
   return (
     <>
       <h1>Orders</h1>
@@ -36,9 +38,9 @@ const OrderListPage = () => {
             </thead>
             <tbody>
               {orders.map((order) => (
-                <tr key={order._id.toString()}>
-                  <td>{order._id.toString()}</td>
-                  <td>{order.user && order.user.name}</td>
+                <tr key={order._id!.toString()}>
+                  <td>{order._id!.toString()}</td>
+                  <td>{order.user.toString()}</td>
                   <td>{order.createdAt?.substring(0, 10)}</td>
                   <td>${addDecimals(Number(order.totalPrice))}</td>
                   <td>

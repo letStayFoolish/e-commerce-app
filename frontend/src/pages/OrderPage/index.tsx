@@ -67,7 +67,7 @@ const OrderPage = () => {
   ) : (
     order && (
       <>
-        <h1>Order {order._id.toString()}</h1>
+        <h1>Order {order._id && order._id.toString()}</h1>
 
         <Button onClick={() => navigate(-1)} className="btn btn-light my-3">
           Go Back

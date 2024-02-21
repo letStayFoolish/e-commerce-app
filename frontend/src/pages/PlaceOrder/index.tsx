@@ -72,7 +72,7 @@ const PlaceOrderPage = () => {
         taxPrice: cart.taxPrice,
         shippingPrice: cart.shippingPrice,
         totalPrice: cart.totalPrice,
-        user: userInfo.name, // TODO: Add user information along with new order
+        user: userInfo, // TODO: Add user information along with new order
       }).unwrap(); // --> since this return Promise, we do want to unwrap
 
       handleClearInputFieldsWithDelay();
