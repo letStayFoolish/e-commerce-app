@@ -49,6 +49,13 @@ export interface IUser {
   isAdmin: boolean;
 }
 
+export interface IUpdatedUser {
+  _id: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}
+
 export interface IOrder {
   _id?: mongoose.Schema.Types.ObjectId;
   orderItems: IOrderItem[];

@@ -208,7 +208,7 @@ export const updateUser = asyncHandler(async (req, res) => {
       foundUser.isAdmin = req.body.isAdmin || foundUser.isAdmin;
 
       const updatedUser = await foundUser.save();
-      res.status(200).json(updateUser);
+      res.status(200).json(updatedUser);
     } else {
       res.status(404);
 
