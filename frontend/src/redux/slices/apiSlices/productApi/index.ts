@@ -41,7 +41,6 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       // invalidatesTags: ["Products"], // clear the cache
     }),
 
-    // uploadProductImage: builder.mutation<undefined, FormData>({
     uploadProductImage: builder.mutation<
       Promise<{ message: string; image: string }>,
       FormData
@@ -50,6 +49,13 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         url: UPLOADS_URL,
         method: "POST",
         body: data,
+      }),
+    }),
+
+    deleteProduct: builder.mutation<IProduct, ObjectId>({
+      query: (productId) => ({
+        url: `${PRODUCTS_URL}/${productId}`,
+        method: "DELETE",
       }),
     }),
   }),
@@ -61,4 +67,5 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useUploadProductImageMutation,
+  useDeleteProductMutation,
 } = productsApiSlice;
