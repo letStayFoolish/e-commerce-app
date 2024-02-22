@@ -54,23 +54,29 @@ export const createProduct = asyncHandler(async (req, res) => {
 // @route   PUT /api/products/:id
 // @access  Private/Admin
 export const updateProduct = asyncHandler(async (req, res) => {
-  const { name, price, description, image, origin, countInStock, category } =
+  const { name, description, category, origin, price, countInStock, image } =
     req.body;
-  const foundProduct = await Product.findById(req.params.id);
 
-  if (foundProduct) {
-    foundProduct.name = name;
-    foundProduct.price = price;
-    foundProduct.description = description;
-    foundProduct.image = image;
-    foundProduct.origin = origin;
-    foundProduct.countInStock = countInStock;
-    foundProduct.category = category;
+  try {
+    const foundProduct = await Product.findById(req.params.id);
 
-    const updatedProduct = await foundProduct.save();
-    req.status(200).json(updatedProduct);
-  } else {
-    res.status(404);
-    throw new Error("Product not found");
+    if (foundProduct) {
+      foundProduct.name = name;
+      foundProduct.description = description;
+      foundProduct.category = category;
+      foundProduct.origin = origin;
+      foundProduct.price = price;
+      foundProduct.countInStock = countInStock;
+      foundProduct.image = image;
+
+      const updatedProduct = await foundProduct.save();
+      res.status(200).json(updatedProduct);
+    } else {
+      res.status(404);
+      throw new Error("Product not found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
   }
 });
