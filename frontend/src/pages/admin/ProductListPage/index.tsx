@@ -13,7 +13,7 @@ import {
 import { ObjectId } from "mongoose";
 import { toast } from "react-toastify";
 
-const ProductPage = () => {
+const ProductListPage = () => {
   // API Query:
   const { data: products, refetch, isLoading, error } = useGetProductsQuery();
   // API Mutation:
@@ -115,4 +115,4 @@ const ProductPage = () => {
   );
 };
 
-export default ProductPage;
+export default ProductListPage;
