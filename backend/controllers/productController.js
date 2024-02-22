@@ -91,8 +91,9 @@ export const deleteProduct = asyncHandler(async (req, res) => {
     if (foundProduct) {
       await Product.deleteOne({ _id: foundProduct._id });
 
-      const updatedProduct = await foundProduct.save();
-      res.status(200).json({ message: `Product: ${foundProduct._id} deleted` });
+      const productId = req.params.id;
+
+      res.status(200).json({ message: `Product: ${productId} deleted` });
     } else {
       res.status(404);
       throw new Error("Product not found");
