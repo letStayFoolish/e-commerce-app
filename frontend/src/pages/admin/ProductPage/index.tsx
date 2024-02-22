@@ -49,8 +49,6 @@ const ProductPage = () => {
     }
   };
 
-  console.log("Product: ", products);
-
   return (
     <>
       <Row>
