@@ -12,8 +12,6 @@ const OrderListPage = () => {
 
   const errorMessage = handleErrorMessage(error!);
 
-  console.log("ORDERS: ", orders);
-
   return (
     <>
       <h1>Orders</h1>
