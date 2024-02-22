@@ -80,3 +80,25 @@ export const updateProduct = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
+
+// @desc    Delete a product
+// @route   DELETE /api/products/:id
+// @access  Private/Admin
+export const deleteProduct = asyncHandler(async (req, res) => {
+  try {
+    const foundProduct = await Product.findById(req.params.id);
+
+    if (foundProduct) {
+      await Product.deleteOne({ _id: foundProduct._id });
+
+      const updatedProduct = await foundProduct.save();
+      res.status(200).json({ message: `Product: ${foundProduct._id} deleted` });
+    } else {
+      res.status(404);
+      throw new Error("Product not found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});

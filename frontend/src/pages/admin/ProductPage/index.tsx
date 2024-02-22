@@ -7,6 +7,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { addDecimals } from "../../../utils";
 import {
   useCreateProductMutation,
+  useDeleteProductMutation,
   useGetProductsQuery,
 } from "../../../redux/slices/apiSlices/productApi";
 import { ObjectId } from "mongoose";
@@ -19,10 +20,21 @@ const ProductPage = () => {
   const [createProduct, { isLoading: loadingCreate }] =
     useCreateProductMutation();
 
+  const [deleteProduct, { isLoading: loadingDeleteProduct }] =
+    useDeleteProductMutation();
+
   const errorMessage = handleErrorMessage(error!);
 
-  const deleteHandler = (productId: ObjectId): void => {
-    console.log(productId);
+  const deleteHandler = async (productId: ObjectId): Promise<void> => {
+    if (window.confirm("Are you sure?")) {
+      try {
+        await deleteProduct(productId);
+        refetch();
+        toast.success("Product deleted");
+      } catch (err) {
+        toast.error(handleErrorMessage(err!));
+      }
+    }
   };
 
   const createProductHandler = async () => {
@@ -57,6 +69,7 @@ const ProductPage = () => {
       </Row>
 
       {loadingCreate && <Loader />}
+      {loadingDeleteProduct && <Loader />}
 
       {isLoading ? (
         <Loader />
