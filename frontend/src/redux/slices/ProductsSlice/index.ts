@@ -19,7 +19,6 @@ const productsSlice = createSlice({
       state: ProductsState,
       action: PayloadAction<Product[]>
     ) {
-      console.log("SLICE ACTION: ", action.payload);
       state.isLoading = false;
       state.products = action.payload;
     },
