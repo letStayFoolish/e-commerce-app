@@ -1,4 +1,6 @@
+import { ObjectId } from "mongoose";
 import { USERS_URL } from "../../../../constants";
+import type { IUser } from "../../../../types";
 import { apiSlice } from "../index";
 
 export const usersApiSlice = apiSlice.injectEndpoints({
@@ -34,6 +36,21 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+
+    getUsers: builder.query<IUser[], void>({
+      query: () => ({
+        url: USERS_URL,
+      }),
+      providesTags: ["User"],
+      keepUnusedDataFor: 5,
+    }),
+
+    deleteUser: builder.mutation<void, string>({
+      query: (userId) => ({
+        url: `${USERS_URL}/${userId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -42,4 +59,6 @@ export const {
   useLogoutApiSliceMutation,
   useRegisterApiSliceMutation,
   useProfileApiSliceMutation,
+  useGetUsersQuery,
+  useDeleteUserMutation,
 } = usersApiSlice;
