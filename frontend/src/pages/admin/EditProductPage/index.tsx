@@ -1,7 +1,8 @@
-import { FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {
   useGetProductDetailsQuery,
   useUpdateProductMutation,
+  useUploadProductImageMutation,
 } from "../../../redux/slices/apiSlices/productApi";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../../../components/Loader";
@@ -25,6 +26,9 @@ const EditProductPage = () => {
 
   const [updateProduct, { isLoading: updateProductLoading }] =
     useUpdateProductMutation();
+
+  const [uploadProductImage, { isLoading: uploadImageLoading }] =
+    useUploadProductImageMutation();
 
   const errorMessage = handleErrorMessage(error!);
 
@@ -72,6 +76,19 @@ const EditProductPage = () => {
     }
   };
 
+  const uploadFileHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+    const formData = new FormData();
+    formData.append("image", e.target.files![0]);
+    try {
+      const res = await uploadProductImage(formData).unwrap();
+      console.log("RES: ", res);
+      toast.success(res.message);
+      setImage(res.image);
+    } catch (err) {
+      toast.error(handleErrorMessage(err!));
+    }
+  };
+
   return (
     <>
       <Link to={"/admin/productlist"} className="btn btn-light my-3">
@@ -79,14 +96,14 @@ const EditProductPage = () => {
       </Link>
       <FormContainer>
         <h1>Edit Product</h1>
-        {updateProductLoading && <Loader />}
+        {uploadImageLoading && <Loader />}
         {isLoading ? (
           <Loader />
         ) : error ? (
           <Message variant="danger">{errorMessage}</Message>
         ) : (
           <Form onSubmit={submitHandler}>
-            {/* USE DEBOUNCE ON INPUT CHANGE */}
+            {/* // TODO: USE DEBOUNCE ON INPUT CHANGE */}
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -141,7 +158,21 @@ const EditProductPage = () => {
                 onChange={(e) => setCountInStock(parseFloat(e.target.value))}
               ></Form.Control>
             </Form.Group>
-
+            <Form.Group>
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter image URL"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+              ></Form.Control>
+              <Form.Control
+                // label="Choose File"
+                onChange={uploadFileHandler}
+                type="file"
+              ></Form.Control>
+              {updateProductLoading && <Loader />}
+            </Form.Group>
             <Button variant="primary" type="submit" className="my-2">
               Update
             </Button>

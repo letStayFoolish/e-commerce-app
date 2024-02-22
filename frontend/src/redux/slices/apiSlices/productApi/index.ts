@@ -1,5 +1,5 @@
 import { apiSlice } from "../index";
-import { PRODUCTS_URL } from "../../../../constants";
+import { PRODUCTS_URL, UPLOADS_URL } from "../../../../constants";
 import type { IUpdatedProduct, IProduct } from "../../../../types";
 import { ObjectId } from "mongoose";
 
@@ -40,6 +40,18 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       }),
       // invalidatesTags: ["Products"], // clear the cache
     }),
+
+    // uploadProductImage: builder.mutation<undefined, FormData>({
+    uploadProductImage: builder.mutation<
+      Promise<{ message: string; image: string }>,
+      FormData
+    >({
+      query: (data) => ({
+        url: UPLOADS_URL,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -48,4 +60,5 @@ export const {
   useGetProductDetailsQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
+  useUploadProductImageMutation,
 } = productsApiSlice;
