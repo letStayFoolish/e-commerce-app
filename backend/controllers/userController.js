@@ -135,26 +135,87 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 // @route   GET /api/users
 // @access  Private/Admin
 export const getUsers = asyncHandler(async (req, res) => {
-  res.send("get users");
+  try {
+    const listOfUsers = await User.find({});
+
+    if (listOfUsers) {
+      res.status(200).json(listOfUsers);
+    } else {
+      res.status(404);
+      throw new Error("No users to be shown");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
 });
 
 // @desc    Get user by ID
 // @route   GET /api/users/:id
 // @access  Private/Admin
 export const getUserByID = asyncHandler(async (req, res) => {
-  res.send("get user by ID");
+  try {
+    const foundUser = await User.findById(req.params.id).select("-password");
+
+    if (foundUser) {
+      res.status(200).json(foundUser);
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
 });
 
 // @desc    Delete user
 // @route   DELETE /api/users/:id
 // @access  Private/Admin
 export const deleteUser = asyncHandler(async (req, res) => {
-  res.send("delete user");
+  try {
+    const foundUser = await User.findById(req.params.id);
+
+    if (foundUser) {
+      if (!foundUser.isAdmin) {
+        await User.deleteOne({ _id: foundUser._id });
+
+        res.status(200).json(`User ${foundUser._id} deleted`);
+      } else {
+        res.status(404);
+        throw new Error("Cannot delete admin user");
+      }
+    } else {
+      res.status(404);
+      throw new Error("User not found, so can not be deleted");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
 });
 
 // @desc    Update user
 // @route   PUT /api/users/:id
 // @access  Private/Admin
 export const updateUser = asyncHandler(async (req, res) => {
-  res.send("update users");
+  try {
+    const foundUser = await User.findById(req.params.id);
+
+    if (foundUser) {
+      foundUser.name = req.body.name || foundUser.name;
+      foundUser.email = req.body.email || foundUser.email;
+      foundUser.isAdmin = req.body.isAdmin || foundUser.isAdmin;
+
+      const updatedUser = await foundUser.save();
+      res.status(200).json(updateUser);
+    } else {
+      res.status(404);
+
+      throw new Error("User not found");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
 });
