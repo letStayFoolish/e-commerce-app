@@ -12,6 +12,6 @@ const router = express.Router();
 // because of we use mongoose, we are working with async code so we need this middleware asyncHandler
 router.route("/").get(getAllProducts).post(protect, admin, createProduct);
 
-router.get("/:id", getProductById).put(protect, admin, updateProduct);
+router.route("/:id").get(getProductById).put(protect, admin, updateProduct);
 
 export default router;

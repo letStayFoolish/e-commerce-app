@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import mongoose from "mongoose";
 
 export interface ICartState {
   cartItems: IProduct[];
@@ -10,7 +10,7 @@ export interface ICartState {
   paymentMethod: string;
 }
 export interface IProduct {
-  _id: ObjectId; // ObjectId
+  _id: mongoose.Schema.Types.ObjectId;
   user: IUser;
   name: string;
   image: string;
@@ -22,6 +22,17 @@ export interface IProduct {
   rating: number;
   category: string;
   qty?: number;
+}
+
+export interface IUpdatedProduct {
+  _id: string;
+  name: string;
+  description: string;
+  origin: string;
+  category: string;
+  image: string;
+  price: number;
+  countInStock: number;
 }
 
 export interface IShippingAddress {
@@ -39,7 +50,7 @@ export interface IUser {
 }
 
 export interface IOrder {
-  _id?: ObjectId;
+  _id?: mongoose.Schema.Types.ObjectId;
   orderItems: IOrderItem[];
   shippingAddress: IShippingAddress;
   paymentMethod: "PayPal" | "" | string;
@@ -59,16 +70,16 @@ export interface IOrder {
 }
 
 export interface IOrderItem {
-  _id: ObjectId;
+  _id: mongoose.Schema.Types.ObjectId;
   image: string;
   name: string;
   price: number;
-  product: ObjectId;
+  product: mongoose.Schema.Types.ObjectId;
   qty?: number;
 }
 
 export interface PaymentResult {
-  id: string | ObjectId;
+  id: string | mongoose.Schema.Types.ObjectId;
   status: number;
   update_time: string;
   email_address: string;

@@ -3,16 +3,17 @@ import {
   useGetProductDetailsQuery,
   useUpdateProductMutation,
 } from "../../../redux/slices/apiSlices/productApi";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../../../components/Loader";
 import Message from "../../../components/Message";
 import { handleErrorMessage } from "../../../utils/handleErrorMessageFromRTK";
 import { Button, Form } from "react-bootstrap";
 import FormContainer from "../../../components/FormContainer";
 import { toast } from "react-toastify";
-import type { IProduct } from "../../../types";
+import type { IUpdatedProduct } from "../../../types";
 
 const EditProductPage = () => {
+  const navigate = useNavigate();
   const { id: productId } = useParams();
 
   const {
@@ -50,7 +51,8 @@ const EditProductPage = () => {
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
-    const updatedProduct: Partial<IProduct> = {
+    const updatedProduct: IUpdatedProduct = {
+      _id: productId!,
       name,
       description,
       origin,
@@ -63,6 +65,7 @@ const EditProductPage = () => {
     try {
       await updateProduct(updatedProduct);
       refetch();
+      navigate(-1);
       toast.success(`Product: ${updatedProduct._id} have been updated`);
     } catch (err) {
       toast.error(err);
