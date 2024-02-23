@@ -1,12 +1,14 @@
 import { apiSlice } from "../index";
 import { ORDERS_URL, PAYPAL_URL } from "../../../../constants";
 import type { IOrder } from "../../../../types";
+import { ObjectId } from "mongoose";
 
 // slice where we have endpoints where we are dealing with asynchronous request
 
 export const ordersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    createOrder: builder.mutation<IOrder, Omit<IOrder, "_id" | "user">>({
+    // createOrder: builder.mutation<IOrder, Omit<IOrder, "_id">>({
+    createOrder: builder.mutation<IOrder, IOrder>({
       query: (order) => ({
         url: ORDERS_URL,
         method: "POST",
@@ -48,6 +50,20 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
         url: `${ORDERS_URL}/mine`,
       }),
     }),
+
+    getAllOrders: builder.query<IOrder[], void>({
+      query: () => ({
+        url: ORDERS_URL,
+      }),
+      keepUnusedDataFor: 5,
+    }),
+
+    deliverOrder: builder.mutation<() => Promise<void>, ObjectId | string>({
+      query: (orderId) => ({
+        url: `${ORDERS_URL}/${orderId}/deliver`,
+        method: "PUT",
+      }),
+    }),
   }),
 });
 
@@ -57,4 +73,6 @@ export const {
   useGetPayPalClientIdQuery,
   usePayOrderMutation,
   useGetMyOrdersQueryQuery,
+  useGetAllOrdersQuery,
+  useDeliverOrderMutation,
 } = ordersApiSlice;

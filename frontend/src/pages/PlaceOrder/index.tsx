@@ -11,6 +11,7 @@ import { clearCartItems } from "../../redux/slices/CartSlice";
 import { toast } from "react-toastify";
 import { addDecimals } from "../../utils";
 import { handleErrorMessage } from "../../utils/handleErrorMessageFromRTK";
+import { IOrderItem } from "../../types";
 
 export interface IError {
   status: number;
@@ -26,6 +27,9 @@ const PlaceOrderPage = () => {
   const cart = useSelector((state: RootState) => state.cartReducer);
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+  const { userInfo } = useSelector(
+    (state: RootState) => state.authSliceReducer
+  );
 
   const errorMessage = handleErrorMessage(error!);
 
@@ -48,15 +52,27 @@ const PlaceOrderPage = () => {
   }, [cart.shippingAddress.address, cart.paymentMethod, navigate]);
 
   const placeOrderHandler = async () => {
+    if (!userInfo) return;
+
     try {
+      const orderItems: IOrderItem[] = cart.cartItems.map((item) => ({
+        _id: item._id,
+        image: item.image,
+        name: item.name,
+        price: item.price,
+        product: item._id,
+        qty: item.qty,
+      }));
+
       const result = await createOrder({
-        orderItems: cart.cartItems,
+        orderItems: orderItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
         taxPrice: cart.taxPrice,
         shippingPrice: cart.shippingPrice,
         totalPrice: cart.totalPrice,
+        user: userInfo, // TODO: Add user information along with new order
       }).unwrap(); // --> since this return Promise, we do want to unwrap
 
       handleClearInputFieldsWithDelay();

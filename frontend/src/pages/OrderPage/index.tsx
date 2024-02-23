@@ -1,5 +1,7 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
+  useDeliverOrderMutation,
   useGetOrderDetailsQuery,
   usePayOrderMutation,
 } from "../../redux/slices/apiSlices/ordersApi";
@@ -9,9 +11,10 @@ import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { addDecimals } from "../../utils";
 import { handleErrorMessage } from "../../utils/handleErrorMessageFromRTK";
-import { IProduct } from "../../types";
+import type { RootState } from "../../redux/store";
 
 const OrderPage = () => {
+  const navigate = useNavigate();
   const { id: orderID = "" } = useParams();
 
   const {
@@ -27,6 +30,11 @@ const OrderPage = () => {
   // Calling the refetch function will force refetch the associated query.
 
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+  const { userInfo } = useSelector(
+    (state: RootState) => state.authSliceReducer
+  );
+  const [updateOrderDeliverStatus, { isLoading: loadingDeliver }] =
+    useDeliverOrderMutation();
 
   const onApproveTest = async () => {
     if (!orderID || !order) {
@@ -37,6 +45,21 @@ const OrderPage = () => {
     toast.success("Payment successful");
   };
 
+  const deliverOrderHandler = async () => {
+    if (!orderID) {
+      return;
+    }
+
+    try {
+      await updateOrderDeliverStatus(orderID);
+
+      refetch();
+      toast.success("Order status updated to delivered");
+    } catch (err) {
+      toast.error(errorMessage);
+    }
+  };
+
   return isLoading ? (
     <Loader />
   ) : error ? (
@@ -44,7 +67,11 @@ const OrderPage = () => {
   ) : (
     order && (
       <>
-        <h1>Order {order._id.toString()}</h1>
+        <h1>Order {order._id && order._id.toString()}</h1>
+
+        <Button onClick={() => navigate(-1)} className="btn btn-light my-3">
+          Go Back
+        </Button>
 
         <Row>
           <Col md={8}>
@@ -91,22 +118,32 @@ const OrderPage = () => {
               <ListGroup.Item>
                 <h2>Order Items</h2>
 
-                {order.orderItems.map((item: IProduct, index: number) => (
-                  <ListGroup.Item key={index}>
-                    <Row>
-                      <Col md={2}>
-                        <Image src={item.image} alt={item.name} fluid rounded />
-                      </Col>
-                      <Col>
-                        <Link to={`/product/${item._id}`}>{item.name}</Link>
-                      </Col>
-                      <Col md={4}>
-                        {item.qty!} x {item.price} ={" "}
-                        {addDecimals(item.qty! * item.price)}
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
-                ))}
+                {order.orderItems.map(
+                  (item) =>
+                    item && (
+                      <ListGroup.Item key={item._id.toString()}>
+                        <Row>
+                          <Col md={2}>
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fluid
+                              rounded
+                            />
+                          </Col>
+                          <Col>
+                            <Link to={`/product/${item.product}`}>
+                              {item.name}
+                            </Link>
+                          </Col>
+                          <Col md={4}>
+                            {item.qty!} x {item.price} ={" "}
+                            {addDecimals(item.qty! * item.price)}
+                          </Col>
+                        </Row>
+                      </ListGroup.Item>
+                    )
+                )}
               </ListGroup.Item>
             </ListGroup>
           </Col>
@@ -121,19 +158,19 @@ const OrderPage = () => {
                 <ListGroup.Item>
                   <Row>
                     <Col>Items</Col>
-                    <Col>${order.itemsPrice}</Col>
+                    <Col>${addDecimals(Number(order.itemsPrice))}</Col>
                   </Row>
                   <Row>
                     <Col>Shipping</Col>
-                    <Col>${order.shippingPrice}</Col>
+                    <Col>${addDecimals(Number(order.shippingPrice))}</Col>
                   </Row>
                   <Row>
                     <Col>Tax</Col>
-                    <Col>${order.taxPrice}</Col>
+                    <Col>${addDecimals(Number(order.taxPrice))}</Col>
                   </Row>
                   <Row>
                     <Col>Total</Col>
-                    <Col>${order.totalPrice}</Col>
+                    <Col>${addDecimals(Number(order.totalPrice))}</Col>
                   </Row>
                 </ListGroup.Item>
                 {!order.isPaid && (
@@ -150,8 +187,21 @@ const OrderPage = () => {
                   </ListGroup.Item>
                 )}
                 {/*  PAY ORDER PLACEHOLDER  */}
-                {/*  MARK AS DELIVERED PLACEHOLDER */}
-                {!order.isDelivered && <ListGroup.Item></ListGroup.Item>}
+                {loadingDeliver && <Loader />}
+                {userInfo &&
+                  userInfo.isAdmin &&
+                  order.isPaid &&
+                  !order.isDelivered && (
+                    <ListGroup.Item>
+                      <Button
+                        type="button"
+                        className="btn btn-block"
+                        onClick={deliverOrderHandler}
+                      >
+                        Mark As Delivered
+                      </Button>
+                    </ListGroup.Item>
+                  )}
               </ListGroup>
             </Card>
           </Col>

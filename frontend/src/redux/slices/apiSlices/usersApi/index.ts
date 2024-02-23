@@ -1,4 +1,5 @@
 import { USERS_URL } from "../../../../constants";
+import type { IUpdatedUser, IUser } from "../../../../types";
 import { apiSlice } from "../index";
 
 export const usersApiSlice = apiSlice.injectEndpoints({
@@ -34,6 +35,38 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+
+    getUsers: builder.query<IUser[], void>({
+      query: () => ({
+        url: USERS_URL,
+      }),
+      providesTags: ["User"], // if we do not do that, we need to reload after we delete user
+      keepUnusedDataFor: 5,
+    }),
+
+    deleteUser: builder.mutation<void, string>({
+      query: (userId) => ({
+        url: `${USERS_URL}/${userId}`,
+        method: "DELETE",
+      }),
+    }),
+
+    getUserDetails: builder.query<IUser, string>({
+      query: (userId) => ({
+        url: `${USERS_URL}/${userId}`,
+      }),
+      providesTags: ["User"], // if we do not do that, we need to reload after we delete user
+      keepUnusedDataFor: 5,
+    }),
+
+    updateUser: builder.mutation<IUser, IUpdatedUser>({
+      query: (data) => ({
+        url: `${USERS_URL}/${data._id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -42,4 +75,8 @@ export const {
   useLogoutApiSliceMutation,
   useRegisterApiSliceMutation,
   useProfileApiSliceMutation,
+  useGetUsersQuery,
+  useDeleteUserMutation,
+  useGetUserDetailsQuery,
+  useUpdateUserMutation,
 } = usersApiSlice;

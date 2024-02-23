@@ -26,6 +26,12 @@ import PlaceOrderPage from "./pages/PlaceOrder/index.tsx";
 import OrderPage from "./pages/OrderPage/index.tsx";
 // import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import ProfilePage from "./pages/Profile/index.tsx";
+import AdminRoute from "./components/AdminRoute/index.tsx";
+import OrderListPage from "./pages/admin/OrderListPage/index.tsx";
+import ProductListPage from "./pages/admin/ProductListPage/index.tsx";
+import EditProductPage from "./pages/admin/EditProductPage/index.tsx";
+import UsersListPage from "./pages/admin/UsersListPage";
+import UserEditPage from "./pages/admin/UserEditPage/index.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,12 +42,22 @@ const router = createBrowserRouter(
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
 
+      {/* Auth user routes */}
       <Route path="" element={<PrivateRoute />}>
         <Route path="/shipping" element={<ShippingPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/placeorder" element={<PlaceOrderPage />} />
         <Route path="/order/:id" element={<OrderPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+      </Route>
+
+      {/* Admin routes */}
+      <Route path="" element={<AdminRoute />}>
+        <Route path="/admin/orderlist" element={<OrderListPage />} />
+        <Route path="/admin/productlist" element={<ProductListPage />} />
+        <Route path="/admin/product/:id/edit" element={<EditProductPage />} />
+        <Route path="/admin/userlist" element={<UsersListPage />} />
+        <Route path="/admin/user/:id/edit" element={<UserEditPage />} />
       </Route>
     </Route>
   )

@@ -15,6 +15,7 @@ export const addOrderItems = asyncHandler(async (req, res) => {
     taxPrice,
     shippingPrice,
     totalPrice,
+    user,
   } = req.body;
 
   if (orderItems && orderItems.length === 0) {
@@ -53,7 +54,7 @@ export const addOrderItems = asyncHandler(async (req, res) => {
       // create Order items mapping through orderItems from localStorage, and defining flag product: item._id,
       // to have the same ID as item, but also need to escape doubling IDs, by setting default _id to undefined
       orderItems: dbOrderItems,
-      user: req.user._id,
+      user,
       shippingAddress,
       paymentMethod,
       itemsPrice,
@@ -134,12 +135,32 @@ export const updateOrderToPaid = asyncHandler(async (req, res) => {
 // @route   PUT /api/orders/:id/deliver
 // @access  Private/Admin
 export const updateOrderToDelivered = asyncHandler(async (req, res) => {
-  res.send("This Order is delivered");
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    order.isDelivered = true;
+    order.deliveredAt = Date.now();
+
+    const updateOrder = await order.save();
+
+    res.status(200).json(updateOrder);
+  } else {
+    res.status(404);
+
+    throw new Error("Order not found");
+  }
 });
 
 // @desc    Get All Orders
 // @route   GET /api/orders
 // @access  Private/Admin
 export const getAllOrders = asyncHandler(async (req, res) => {
-  res.send("List of all orders: ...");
+  const orders = await Order.find({});
+
+  if (orders) {
+    res.status(200).json(orders);
+  } else {
+    res.status(404);
+    throw new Error("Order list is empty");
+  }
 });

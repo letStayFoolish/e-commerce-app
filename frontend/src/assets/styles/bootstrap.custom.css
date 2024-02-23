@@ -88,8 +88,8 @@
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
   --bs-body-color: #7b8a8b;
-  --bs-emphasis-color: #000;
-  --bs-emphasis-color-rgb: 0, 0, 0;
+  --bs-emphasis-color: rgb(221, 216, 212);
+  --bs-emphasis-color-rgb: rgb(221, 216, 212);
   --bs-secondary-color: rgba(123, 138, 139, 0.75);
   --bs-secondary-color-rgb: 123, 138, 139;
   --bs-secondary-bg: #bdcecf;
@@ -232,7 +232,7 @@ h1,
   margin-bottom: 1.2rem;
   font-weight: 500;
   line-height: 1.2;
-  color: var(--bs-heading-color, inherit);
+  color: var(--main-background-color);
 }
 
 h1,
@@ -3021,7 +3021,7 @@ textarea.form-control.is-invalid {
   --bs-btn-font-weight: 400;
   --bs-btn-line-height: 1.5;
   --bs-btn-color: #7b8a8b;
-  --bs-btn-bg: transparent;
+  --bs-btn-bg: rgb(77, 54,38);
   --bs-btn-border-width: var(--bs-border-width);
   --bs-btn-border-color: transparent;
   --bs-btn-border-radius: 0.375rem;
@@ -4021,7 +4021,7 @@ fieldset:disabled .btn {
   --bs-navbar-color: rgba(var(--bs-emphasis-color-rgb), 0.65);
   --bs-navbar-hover-color: rgba(var(--bs-emphasis-color-rgb), 0.8);
   --bs-navbar-disabled-color: rgba(var(--bs-emphasis-color-rgb), 0.3);
-  --bs-navbar-active-color: rgba(var(--bs-emphasis-color-rgb), 1);
+  --bs-navbar-active-color: var(--bs-emphasis-color-rgb);
   --bs-navbar-brand-padding-y: 0.3125rem;
   --bs-navbar-brand-margin-end: 1rem;
   --bs-navbar-brand-font-size: 1.25rem;
