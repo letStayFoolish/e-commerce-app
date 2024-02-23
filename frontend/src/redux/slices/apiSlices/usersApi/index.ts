@@ -1,4 +1,3 @@
-import { ObjectId } from "mongoose";
 import { USERS_URL } from "../../../../constants";
 import type { IUpdatedUser, IUser } from "../../../../types";
 import { apiSlice } from "../index";
@@ -41,7 +40,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: USERS_URL,
       }),
-      providesTags: ["Users"], // if we do not do that, we need to reload after we delete user
+      providesTags: ["User"], // if we do not do that, we need to reload after we delete user
       keepUnusedDataFor: 5,
     }),
 
@@ -56,16 +55,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       query: (userId) => ({
         url: `${USERS_URL}/${userId}`,
       }),
+      providesTags: ["User"], // if we do not do that, we need to reload after we delete user
       keepUnusedDataFor: 5,
     }),
 
-    updateUser: builder.mutation<void, IUpdatedUser>({
+    updateUser: builder.mutation<IUser, IUpdatedUser>({
       query: (data) => ({
         url: `${USERS_URL}/${data._id}`,
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["Users"],
+      invalidatesTags: ["User"],
     }),
   }),
 });
