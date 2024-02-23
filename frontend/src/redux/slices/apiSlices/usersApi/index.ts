@@ -11,6 +11,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...credentials },
       }),
+      invalidatesTags: ["User"], // clear the cache
     }),
 
     logoutApiSlice: builder.mutation({
@@ -18,6 +19,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/logout`,
         method: "POST",
       }),
+      invalidatesTags: ["User"], // clear the cache
     }),
 
     registerApiSlice: builder.mutation({
@@ -26,6 +28,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...credentials },
       }),
+      invalidatesTags: ["User"], // clear the cache
     }),
 
     profileApiSlice: builder.mutation({
@@ -34,6 +37,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: ["User"], // clear the cache
     }),
 
     getUsers: builder.query<IUser[], void>({
@@ -49,6 +53,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/${userId}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["User"], // clear the cache
     }),
 
     getUserDetails: builder.query<IUser, string>({

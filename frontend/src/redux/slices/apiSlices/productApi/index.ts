@@ -21,7 +21,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         url: `${PRODUCTS_URL}/${productId}`,
       }),
       keepUnusedDataFor: 5, // in seconds
-      //   providesTags: ["Product"],
+      providesTags: ["Product"],
     }),
 
     createProduct: builder.mutation<void, void>({
@@ -50,6 +50,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Product"], // clear the cache
     }),
 
     deleteProduct: builder.mutation<IProduct, ObjectId>({
@@ -57,6 +58,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         url: `${PRODUCTS_URL}/${productId}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Product"], // clear the cache
     }),
   }),
 });
