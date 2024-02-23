@@ -39,19 +39,20 @@ const UserEditPage = () => {
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
 
+    const updatedUser = {
+      _id: userId!,
+      name,
+      email,
+      isAdmin,
+    };
+
     try {
-      const updatedUser = {
-        _id: userId!,
-        name,
-        email,
-        isAdmin,
-      };
       await updateUser(updatedUser);
       refetch();
       navigate(-1);
       toast.success("User fields updated successfully");
     } catch (error) {
-      toast.error(errorMessage(error!));
+      toast.error(handleErrorMessage(error!));
     }
   };
 

@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 
 const UsersListPage = () => {
   const { data: users, refetch, isLoading, error } = useGetUsersQuery();
+
   const errorMessage = handleErrorMessage(error!);
   const [deleteUser, { isLoading: deleteLoading }] = useDeleteUserMutation();
 

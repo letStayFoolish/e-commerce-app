@@ -174,7 +174,7 @@ export const getUserByID = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 export const deleteUser = asyncHandler(async (req, res) => {
   try {
-    const foundUser = await User.findById(req.params.id);
+    const foundUser = await User.findById(req.params.id).select("-password");
 
     if (foundUser) {
       if (!foundUser.isAdmin) {
@@ -200,12 +200,12 @@ export const deleteUser = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 export const updateUser = asyncHandler(async (req, res) => {
   try {
-    const foundUser = await User.findById(req.params.id);
+    const foundUser = await User.findById(req.params.id).select("-password");
 
     if (foundUser) {
       foundUser.name = req.body.name || foundUser.name;
       foundUser.email = req.body.email || foundUser.email;
-      foundUser.isAdmin = req.body.isAdmin || foundUser.isAdmin;
+      foundUser.isAdmin = Boolean(req.body.isAdmin);
 
       const updatedUser = await foundUser.save();
       res.status(200).json(updatedUser);

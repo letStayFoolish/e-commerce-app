@@ -13,7 +13,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         url: PRODUCTS_URL,
       }),
       keepUnusedDataFor: 5, // in seconds
-      providesTags: ["Products"],
+      providesTags: ["Product"],
     }),
 
     getProductDetails: builder.query<IProduct, ObjectId | string>({
@@ -38,7 +38,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: product,
       }),
-      invalidatesTags: ["Products"], // clear the cache
+      invalidatesTags: ["Product"], // clear the cache
     }),
 
     uploadProductImage: builder.mutation<
