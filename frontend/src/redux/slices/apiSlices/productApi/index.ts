@@ -1,6 +1,6 @@
 import { apiSlice } from "../index";
 import { PRODUCTS_URL, UPLOADS_URL } from "../../../../constants";
-import type { IUpdatedProduct, IProduct } from "../../../../types";
+import type { IUpdatedProduct, IProduct, IReviews } from "../../../../types";
 import { ObjectId } from "mongoose";
 
 // slice where we have endpoints where we are dealing with asynchronous request
@@ -60,6 +60,15 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Product"], // clear the cache
     }),
+
+    createProductReview: builder.mutation<Promise<void>, IReviews>({
+      query: (product) => ({
+        url: `${PRODUCTS_URL}/${product._id}/reviews`,
+        method: "POST",
+        body: product,
+      }),
+      invalidatesTags: ["Product"],
+    }),
   }),
 });
 
@@ -70,4 +79,5 @@ export const {
   useUpdateProductMutation,
   useUploadProductImageMutation,
   useDeleteProductMutation,
+  useCreateProductReviewMutation,
 } = productsApiSlice;

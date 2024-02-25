@@ -17,11 +17,21 @@ export interface IProduct {
   origin: string;
   description: string;
   numReviews: number;
+  reviews: IReviews[];
   price: number;
   countInStock: number;
   rating: number;
   category: string;
   qty?: number;
+}
+
+export interface IReviews {
+  // _id: mongoose.Schema.Types.ObjectId;
+  _id: string;
+  name?: string;
+  rating: number;
+  comment: string;
+  createdAt?: string;
 }
 
 export interface IUpdatedProduct {

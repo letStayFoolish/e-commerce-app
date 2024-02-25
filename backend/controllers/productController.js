@@ -103,3 +103,45 @@ export const deleteProduct = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
+
+// @desc    Create a new review
+// @route   POST /api/products/:id/reviews
+// @access  Private
+export const createProductReview = asyncHandler(async (req, res) => {
+  const { rating, comment } = req.body;
+
+  const foundProduct = await Product.findById(req.params.id);
+
+  if (foundProduct) {
+    const alreadyReviewed = foundProduct.reviews.find(
+      (review) => review.user.toString() === req.user._id.toString()
+    );
+
+    if (alreadyReviewed) {
+      res.status(400);
+      throw new Error("You have already already reviewed this product!");
+    }
+
+    const review = {
+      user: req.user._id,
+      name: req.user.name,
+      rating: Number(rating),
+      comment,
+    };
+
+    foundProduct.reviews.push(review);
+
+    foundProduct.numReviews = foundProduct.reviews.length;
+
+    foundProduct.rating =
+      foundProduct.reviews.reduce((acc, review) => acc + review.rating, 0) /
+      foundProduct.reviews.length;
+
+    await foundProduct.save();
+    res.status(201).json({ message: "Review added" });
+  } else {
+    res.status(404);
+
+    throw new Error("Product not found");
+  }
+});
