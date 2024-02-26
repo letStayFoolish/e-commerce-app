@@ -5,12 +5,21 @@ import { ObjectId } from "mongoose";
 
 // slice where we have endpoints where we are dealing with asynchronous request
 
+export type getProductsQuery = {
+  products: IProduct[];
+  page: number;
+  pages: number;
+};
+
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // FIXME: define types for query: <IProducts[], void> or what else you should use later inside component...
-    getProducts: builder.query<IProduct[], void>({
-      query: () => ({
+    getProducts: builder.query<getProductsQuery, { pageNumber: string }>({
+      query: ({ pageNumber }) => ({
         url: PRODUCTS_URL,
+        params: {
+          pageNumber,
+        },
       }),
       keepUnusedDataFor: 5, // in seconds
       providesTags: ["Product"],

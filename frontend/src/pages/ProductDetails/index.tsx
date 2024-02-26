@@ -186,7 +186,7 @@ const ProductDetails = (): JSX.Element => {
         </Col>
       </Row>
       <Row>
-        <Col md={6}>
+        <Col md={9}>
           <h2>Reviews</h2>
 
           {product?.reviews.length === 0 && <Message>No Reviews</Message>}
