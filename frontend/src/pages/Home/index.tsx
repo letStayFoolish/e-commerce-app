@@ -5,14 +5,9 @@ import Loader from "../../components/Loader";
 import Message from "../../components/Message";
 import { useParams } from "react-router-dom";
 import Paginate from "../../components/Paginate";
-import { type RootState } from "../../redux/store";
-import { useSelector } from "react-redux";
 
 const Home = () => {
   let { pageNumber } = useParams();
-  const { userInfo } = useSelector(
-    (state: RootState) => state.authSliceReducer
-  );
 
   if (!pageNumber) {
     pageNumber = "1";
