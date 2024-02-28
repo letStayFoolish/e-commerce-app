@@ -1,11 +1,6 @@
 import { Pagination } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-
-export interface IPaginateProps {
-  pages: number;
-  page: number;
-  pathname: string;
-}
+import { IPaginateProps } from "./types";
 
 const Paginate = ({ pages, page, pathname }: IPaginateProps) => {
   return (
