@@ -11,8 +11,6 @@ export const getAllProducts = asyncHandler(async (req, res) => {
     ? { name: { $regex: req.query.keyword, $options: "i" } }
     : {};
 
-  console.log("KEYWORD: ", keyword);
-
   const count = await Product.countDocuments({ ...keyword }); // total pages
 
   // empty object - to get all of them
