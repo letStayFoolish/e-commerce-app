@@ -3,17 +3,24 @@ import { useGetProductsQuery } from "../../redux/slices/apiSlices/productApi";
 import Product from "../../components/Product";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Paginate from "../../components/Paginate";
 
 const Home = () => {
-  let { pageNumber } = useParams();
+  let { keyword, pageNumber } = useParams();
 
-  if (!pageNumber) {
-    pageNumber = "1";
+  if (!keyword) {
+    keyword = "";
   }
 
-  const { data, isLoading, error } = useGetProductsQuery({ pageNumber });
+  if (!pageNumber) {
+    pageNumber = "";
+  }
+
+  const { data, isLoading, error } = useGetProductsQuery({
+    keyword,
+    pageNumber,
+  });
 
   if (isLoading) {
     return <Loader />;
@@ -30,7 +37,11 @@ const Home = () => {
   return (
     <>
       <h1>Latest Products</h1>
-
+      {!keyword && (
+        <Link to="/" className="btn btn-light mb-4">
+          Go Back
+        </Link>
+      )}
       <Row>
         {data &&
           data.products?.map((product) => (
@@ -39,7 +50,14 @@ const Home = () => {
             </Col>
           ))}
       </Row>
-      {data && <Paginate pages={data.pages} page={data.page} pathname="page" />}
+      {data && (
+        <Paginate
+          pages={data.pages}
+          page={data.page}
+          pathname="page"
+          keyword={keyword ? keyword : ""}
+        />
+      )}
     </>
   );
 };

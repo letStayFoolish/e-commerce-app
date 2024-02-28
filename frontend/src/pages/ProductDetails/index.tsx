@@ -25,6 +25,7 @@ import { FormEvent, useState } from "react";
 import { RootState } from "../../redux/store";
 import { toast } from "react-toastify";
 import { handleErrorMessage } from "../../utils/handleErrorMessageFromRTK";
+import { addDecimals } from "../../utils";
 
 const ProductDetails = (): JSX.Element => {
   const [qty, setQty] = useState<number>(1);
@@ -62,9 +63,42 @@ const ProductDetails = (): JSX.Element => {
     );
   }
 
-  function handleAddToCart(product: IProduct) {
+  const addToCartToast = (product: IProduct) => (
+    <ListGroup variant="flush">
+      <h3>Added to Cart</h3>
+      <hr />
+      <Row>
+        <Col>
+          <Image
+            src={product.image}
+            alt={product.name}
+            fluid
+            style={{ height: "80px" }}
+          />
+        </Col>
+        <Col>
+          <strong>{product.name}</strong>
+          <p>${product.price}</p>
+        </Col>
+      </Row>
+
+      <hr />
+      <p>You have {qty} items to your cart</p>
+      <hr />
+      <p>
+        <strong>Total: </strong> ${addDecimals(qty * product.price)}
+      </p>
+      <Button className="btn my-3" onClick={() => navigate("/cart")}>
+        Checkout
+      </Button>
+    </ListGroup>
+  );
+
+  const handleAddToCart = (product: IProduct) => {
     dispatch(addToCart({ ...product, qty })); // so later on in slice you can do: item.qty or item.price etc...
-  }
+
+    toast(addToCartToast(product), { autoClose: 2000 });
+  };
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
