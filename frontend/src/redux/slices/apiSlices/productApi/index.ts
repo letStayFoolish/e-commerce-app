@@ -1,16 +1,25 @@
 import { apiSlice } from "../index";
 import { PRODUCTS_URL, UPLOADS_URL } from "../../../../constants";
-import type { IUpdatedProduct, IProduct } from "../../../../types";
+import type { IUpdatedProduct, IProduct, IReviews } from "../../../../types";
 import { ObjectId } from "mongoose";
 
 // slice where we have endpoints where we are dealing with asynchronous request
 
+export type getProductsQuery = {
+  products: IProduct[];
+  page: number;
+  pages: number;
+};
+
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // FIXME: define types for query: <IProducts[], void> or what else you should use later inside component...
-    getProducts: builder.query<IProduct[], void>({
-      query: () => ({
+    getProducts: builder.query<getProductsQuery, { pageNumber: string }>({
+      query: ({ pageNumber }) => ({
         url: PRODUCTS_URL,
+        params: {
+          pageNumber,
+        },
       }),
       keepUnusedDataFor: 5, // in seconds
       providesTags: ["Product"],
@@ -21,7 +30,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         url: `${PRODUCTS_URL}/${productId}`,
       }),
       keepUnusedDataFor: 5, // in seconds
-      //   providesTags: ["Product"],
+      providesTags: ["Product"],
     }),
 
     createProduct: builder.mutation<void, void>({
@@ -50,6 +59,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Product"], // clear the cache
     }),
 
     deleteProduct: builder.mutation<IProduct, ObjectId>({
@@ -57,6 +67,16 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         url: `${PRODUCTS_URL}/${productId}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Product"], // clear the cache
+    }),
+
+    createProductReview: builder.mutation<Promise<void>, IReviews>({
+      query: (product) => ({
+        url: `${PRODUCTS_URL}/${product._id}/reviews`,
+        method: "POST",
+        body: product,
+      }),
+      invalidatesTags: ["Product"],
     }),
   }),
 });
@@ -68,4 +88,5 @@ export const {
   useUpdateProductMutation,
   useUploadProductImageMutation,
   useDeleteProductMutation,
+  useCreateProductReviewMutation,
 } = productsApiSlice;

@@ -12,10 +12,25 @@ import {
 } from "../../../redux/slices/apiSlices/productApi";
 import { ObjectId } from "mongoose";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import Paginate from "../../../components/Paginate";
+import { useSelector } from "react-redux";
+import { type RootState } from "../../../redux/store";
 
 const ProductListPage = () => {
+  let { pageNumber } = useParams();
+
+  const { userInfo } = useSelector(
+    (state: RootState) => state.authSliceReducer
+  );
+
+  if (!pageNumber) {
+    pageNumber = "1";
+  }
   // API Query:
-  const { data: products, refetch, isLoading, error } = useGetProductsQuery();
+  const { data, refetch, isLoading, error } = useGetProductsQuery({
+    pageNumber,
+  });
   // API Mutation:
   const [createProduct, { isLoading: loadingCreate }] =
     useCreateProductMutation();
@@ -87,8 +102,9 @@ const ProductListPage = () => {
               </tr>
             </thead>
             <tbody>
-              {products &&
-                products.map((product) => (
+              {data &&
+                data.products &&
+                data.products.map((product) => (
                   <tr key={product._id.toString()}>
                     <td>{product._id.toString()}</td>
                     <td>{product.name}</td>
@@ -109,6 +125,14 @@ const ProductListPage = () => {
                 ))}
             </tbody>
           </Table>
+
+          {data && userInfo && (
+            <Paginate
+              pages={data.pages}
+              page={data.page}
+              pathname="admin/productlist"
+            />
+          )}
         </>
       )}
     </>
