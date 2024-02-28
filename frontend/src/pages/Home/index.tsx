@@ -44,9 +44,7 @@ const Home = () => {
             </Col>
           ))}
       </Row>
-      {data && userInfo && (
-        <Paginate pages={data.pages} page={data.page} pathname="page" />
-      )}
+      {data && <Paginate pages={data.pages} page={data.page} pathname="page" />}
     </>
   );
 };
