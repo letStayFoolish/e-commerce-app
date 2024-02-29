@@ -18,17 +18,23 @@ import { useSelector } from "react-redux";
 import { type RootState } from "../../../redux/store";
 
 const ProductListPage = () => {
-  let { pageNumber } = useParams();
+  let { keyword, pageNumber } = useParams();
 
   const { userInfo } = useSelector(
     (state: RootState) => state.authSliceReducer
   );
 
   if (!pageNumber) {
-    pageNumber = "1";
+    pageNumber = "";
   }
+
+  if (!keyword) {
+    keyword = "";
+  }
+
   // API Query:
   const { data, refetch, isLoading, error } = useGetProductsQuery({
+    keyword,
     pageNumber,
   });
   // API Mutation:
@@ -131,6 +137,7 @@ const ProductListPage = () => {
               pages={data.pages}
               page={data.page}
               pathname="admin/productlist"
+              keyword={keyword ? keyword : ""}
             />
           )}
         </>
