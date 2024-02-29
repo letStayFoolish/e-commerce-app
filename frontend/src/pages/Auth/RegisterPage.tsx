@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import FormContainer from "../../components/FormContainer";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -9,12 +9,14 @@ import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import { IUser } from "../../types";
 import { type ErrorApiSLice } from "../../redux/slices/apiSlices/types";
+import "./style.css";
 
 const RegisterPage = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmationPassword, setConfirmationPassword] = useState<string>("");
+  const [active, setActive] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -55,6 +57,32 @@ const RegisterPage = () => {
     }
   }
 
+  useEffect(() => {
+    const inputElement = document.getElementById("password");
+    if (!inputElement) return; // Exit if the element doesn't exist
+
+    const onInput = (e: Event) => {
+      const currentPassword = (e.target as HTMLInputElement).value;
+      const guidelines = document
+        .getElementById("password-guidelines")
+        ?.getElementsByTagName("p");
+      if (!guidelines) return; // Exit if guidelines don't exist
+
+      guidelines[1].style.color = currentPassword.length >= 6 ? "green" : "red";
+      guidelines[2].style.color = /[A-Z]/.test(currentPassword)
+        ? "green"
+        : "red";
+      guidelines[3].style.color = /\d/.test(currentPassword) ? "green" : "red";
+    };
+
+    inputElement.addEventListener("input", onInput);
+
+    // Cleanup function to remove the event listener
+    return () => {
+      inputElement.removeEventListener("input", onInput);
+    };
+  }, []);
+
   return isLoading ? (
     <Loader />
   ) : (
@@ -88,9 +116,20 @@ const RegisterPage = () => {
             placeholder="Choose Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onFocus={() => setActive(true)}
             required
           ></Form.Control>
         </Form.Group>
+        <div
+          id="password-guidelines"
+          className={`guidelines ${active ? "guidelines-active" : null}`}
+        >
+          <p>Your password must contain:</p>
+          <p>* At least 6 symbols</p>
+          <p>* One uppercase letter</p>
+          <p>* Numbers</p>
+        </div>
+
         <Form.Group controlId="confirmationPassword">
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
@@ -111,7 +150,7 @@ const RegisterPage = () => {
           Register
         </Button>
       </Form>
-      <Row>
+      <Row className="my-3">
         <Col>
           Already have an account?&nbsp;
           <Link to={redirect ? `/login?redirect=${redirect}` : "/"}>
