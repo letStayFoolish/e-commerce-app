@@ -93,10 +93,7 @@ const ProductDetails = (): JSX.Element => {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">
-          {handleErrorMessage(error) ||
-            "Error while fetching data. Please try again."}
-        </Message>
+        <Message variant="danger">{handleErrorMessage(error)}</Message>
       ) : (
         <>
           <Row>
