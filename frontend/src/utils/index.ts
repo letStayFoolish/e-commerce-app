@@ -5,7 +5,7 @@ import { log } from "./handleLogs";
 import {
   getFromSessionStorage,
   setToSessionStorage,
-} from "./handleSessionstorage";
+} from "./handleSessionStorage";
 import { updateCart } from "./updateCart";
 
 export {
