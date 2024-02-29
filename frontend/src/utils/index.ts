@@ -7,6 +7,7 @@ import {
   setToSessionStorage,
 } from "./handleSessionStorage";
 import { updateCart } from "./updateCart";
+import { useDebounce } from "./useDebounce";
 
 export {
   addDecimals,
@@ -17,4 +18,5 @@ export {
   updateCart,
   getFromSessionStorage,
   setToSessionStorage,
+  useDebounce,
 };
