@@ -37,7 +37,7 @@ const Home = () => {
   return (
     <>
       <h1>Latest Products</h1>
-      {!keyword && (
+      {keyword && (
         <Link to="/" className="btn btn-light mb-4">
           Go Back
         </Link>
