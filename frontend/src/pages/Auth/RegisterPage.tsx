@@ -115,7 +115,7 @@ const RegisterPage = () => {
         <Col>
           Already have an account?&nbsp;
           <Link to={redirect ? `/login?redirect=${redirect}` : "/"}>
-            Register
+            Sing In
           </Link>
         </Col>
       </Row>
