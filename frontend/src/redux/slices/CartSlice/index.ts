@@ -52,7 +52,13 @@ const cartSlice = createSlice({
     },
 
     clearCartItems(state: ICartState) {
-      state = initialState;
+      state.cartItems = [];
+      state.shippingPrice = "";
+      state.paymentMethod = "";
+      state.shippingAddress.address = "";
+      state.shippingAddress.city = "";
+      state.shippingAddress.postalCode = "";
+      state.shippingAddress.country = "";
 
       updateCart(state);
     },
