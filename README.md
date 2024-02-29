@@ -2,6 +2,8 @@
 
 Welcome to the CoffeeShop E-commerce Platform - your go-to solution for exploring and purchasing the finest coffee blends. Built with a modern tech stack, this full-stack application offers a seamless shopping experience, from browsing products to making secure payments.
 
+## Home Page
+
 <img src='./uploads/screens/screen-01.png' alt='coffee shop home page'>
 
 <details>
@@ -10,6 +12,17 @@ Welcome to the CoffeeShop E-commerce Platform - your go-to solution for explorin
     <img src='./uploads/screens/screen-03.png' alt='coffee shop shopping cart details page'>
     <img src='./uploads/screens/screen-04.png' alt='coffee shop profile my orders page'>
     <img src='./uploads/screens/screen-05.png' alt='coffee shop admin page products list'>
+</details>
+
+## Admin Functionality And Pages
+
+<img src='./uploads/screens/admin-screen-01.png' alt='coffee shop admin dropdown navigation'>
+
+<details>
+    <summary>Click to show more</summary>
+    <img src='./uploads/screens/admin-screen-02.png' alt='coffee shop admin page list of all users'>
+    <img src='./uploads/screens/admin-screen-03.png' alt='coffee shop admin page list of all products'>
+    <img src='./uploads/screens/admin-screen-04.png' alt='coffee shop admin page list of all orders'>
 </details>
 
 ## Features
