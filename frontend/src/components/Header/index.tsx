@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useLogoutApiSliceMutation } from "../../redux/slices/apiSlices/usersApi";
 import SearchBox from "../SearchBox";
+import { clearCartItems } from "../../redux/slices/CartSlice";
 
 const Header = () => {
   const [logoutApiCall] = useLogoutApiSliceMutation();
@@ -31,6 +32,7 @@ const Header = () => {
     try {
       await logoutApiCall(undefined).unwrap();
       dispatch(logout());
+      dispatch(clearCartItems());
       navigate("/login");
     } catch (error) {
       console.log(error);
