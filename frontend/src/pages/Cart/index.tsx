@@ -18,6 +18,7 @@ import { IProduct } from "../../types";
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { cartItems } = useSelector((state: RootState) => state.cartReducer);
 
   async function handleChangeQtyInCart(
     item: IProduct,
@@ -33,8 +34,6 @@ const Cart = () => {
   function handleCheckout() {
     navigate("/login?redirect=/shipping");
   }
-
-  const { cartItems } = useSelector((state: RootState) => state.cartReducer);
 
   return (
     <Row>
