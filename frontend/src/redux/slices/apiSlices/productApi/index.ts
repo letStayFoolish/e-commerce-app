@@ -8,7 +8,6 @@ import { getProductsQuery } from "./types";
 
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // FIXME: define types for query: <IProducts[], void> or what else you should use later inside component...
     getProducts: builder.query<
       getProductsQuery,
       { keyword: string; pageNumber: string }
