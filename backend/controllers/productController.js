@@ -157,3 +157,22 @@ export const createProductReview = asyncHandler(async (req, res) => {
     throw new Error("Product not found");
   }
 });
+
+// @desc    Get top products
+// @route   GET /api/products/top
+// @access  Public
+export const getTopProducts = asyncHandler(async (req, res) => {
+  try {
+    const products = await Product.find({}).sort({ rating: -1 }).limit(4);
+
+    if (products) {
+      res.status(200).json(products);
+    } else {
+      res.status(404);
+      throw new Error("No products found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
