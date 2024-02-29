@@ -1,0 +1,16 @@
+.guidelines {
+  font-size: 0.875rem;
+  margin: 8px 0;
+  display: none;
+  flex-direction: column;
+  letter-spacing: 0.1;
+}
+
+.guidelines-active {
+  display: flex;
+}
+
+.guidelines p {
+  padding: 0;
+  margin: 0;
+}
