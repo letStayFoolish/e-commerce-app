@@ -15,6 +15,7 @@ import { logout } from "../../redux/slices/UserSlice/authSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useLogoutApiSliceMutation } from "../../redux/slices/apiSlices/usersApi";
+import SearchBox from "../SearchBox";
 
 const Header = () => {
   const [logoutApiCall] = useLogoutApiSliceMutation();
@@ -52,6 +53,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
+              <SearchBox />
               <LinkContainer to="/cart">
                 <NavLink>
                   <FaShoppingCart /> Cart

@@ -25,6 +25,7 @@ import { FormEvent, useState } from "react";
 import { RootState } from "../../redux/store";
 import { toast } from "react-toastify";
 import { handleErrorMessage } from "../../utils/handleErrorMessageFromRTK";
+import { addToCartToast } from "./addToCartToast";
 
 const ProductDetails = (): JSX.Element => {
   const [qty, setQty] = useState<number>(1);
@@ -62,9 +63,11 @@ const ProductDetails = (): JSX.Element => {
     );
   }
 
-  function handleAddToCart(product: IProduct) {
+  const handleAddToCart = (product: IProduct) => {
     dispatch(addToCart({ ...product, qty })); // so later on in slice you can do: item.qty or item.price etc...
-  }
+
+    toast(addToCartToast(product, navigate, qty), { autoClose: 2000 });
+  };
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();

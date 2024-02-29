@@ -34,8 +34,7 @@ const Cart = () => {
     navigate("/login?redirect=/shipping");
   }
 
-  const cart = useSelector((state: RootState) => state.cartReducer);
-  const { cartItems } = cart;
+  const { cartItems } = useSelector((state: RootState) => state.cartReducer);
 
   return (
     <Row>
