@@ -1,5 +1,5 @@
 import { ICartState } from "../types";
-import { addDecimals, setToLocalStorage } from "./";
+import { addDecimals, setToSessionStorage } from "./";
 
 export function updateCart(state: ICartState) {
   // Calculate items price
@@ -22,7 +22,7 @@ export function updateCart(state: ICartState) {
 
   state.totalPrice = addDecimals(totalPrice);
 
-  setToLocalStorage("cart", state);
+  setToSessionStorage("cart", state);
 
   return state;
 }

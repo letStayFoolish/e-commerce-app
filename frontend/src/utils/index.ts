@@ -2,6 +2,10 @@ import { addDecimals } from "./addDecimals";
 import { getFullYear } from "./getDate";
 import { getFromLocalStorage, setToLocalStorage } from "./handleLocalstorage";
 import { log } from "./handleLogs";
+import {
+  getFromSessionStorage,
+  setToSessionStorage,
+} from "./handleSessionstorage";
 import { updateCart } from "./updateCart";
 
 export {
@@ -11,4 +15,6 @@ export {
   setToLocalStorage,
   log,
   updateCart,
+  getFromSessionStorage,
+  setToSessionStorage,
 };

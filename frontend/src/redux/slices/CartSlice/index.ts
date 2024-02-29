@@ -1,12 +1,12 @@
 // In here we are not dealing with endpoints and asynchronous requests, that is why we are using createSlice instead of createApi
 
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { getFromLocalStorage, updateCart } from "../../../utils";
+import { getFromSessionStorage, updateCart } from "../../../utils";
 import { ICartState, IProduct, IShippingAddress } from "../../../types";
 
-const initialState: ICartState = getFromLocalStorage("cart")
-  ? getFromLocalStorage("cart")!
-  : { cartItems: [], shippingAddress: {}, paymentMethod: "PayPal" };
+const initialState: ICartState = getFromSessionStorage("cart")
+  ? getFromSessionStorage("cart")!
+  : { cartItems: [], shippingAddress: {}, paymentMethod: "" };
 
 const cartSlice = createSlice({
   name: "cart",
@@ -52,13 +52,7 @@ const cartSlice = createSlice({
     },
 
     clearCartItems(state: ICartState) {
-      state.cartItems = [];
-      state.shippingPrice = "";
-      state.paymentMethod = "";
-      state.shippingAddress.address = "";
-      state.shippingAddress.city = "";
-      state.shippingAddress.postalCode = "";
-      state.shippingAddress.country = "";
+      state = initialState;
 
       updateCart(state);
     },

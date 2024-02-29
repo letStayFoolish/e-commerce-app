@@ -59,14 +59,14 @@ Follow these instructions to get your copy of the project up and running on your
    ```
 2. Install NPM packages for both frontend and backend:
 
-# For frontend
+### For frontend
 
 ```
 cd frontend
 npm install
 ```
 
-# For backend (project's root)
+### For backend (project's root)
 
 ```
 npm install
