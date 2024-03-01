@@ -22,7 +22,7 @@ const reviewSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: true, // mongoDB will record createdAt and updateAt automatically
   }
 );
 

@@ -2,6 +2,7 @@ import { apiSlice } from "../index";
 import { ORDERS_URL, PAYPAL_URL } from "../../../../constants";
 import type { IOrder } from "../../../../types";
 import { ObjectId } from "mongoose";
+import { getAllOrdersQuery } from "./types";
 
 // slice where we have endpoints where we are dealing with asynchronous request
 
@@ -56,9 +57,12 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
       providesTags: ["Order"],
     }),
 
-    getAllOrders: builder.query<IOrder[], void>({
-      query: () => ({
+    getAllOrders: builder.query<getAllOrdersQuery, { pageNumber: string }>({
+      query: ({ pageNumber }) => ({
         url: ORDERS_URL,
+        params: {
+          pageNumber,
+        },
       }),
       providesTags: ["Order"],
       keepUnusedDataFor: 5,
