@@ -52,6 +52,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   if (user) {
     generateToken(res, user._id);
 
+    // status 201: something is created
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -135,11 +136,22 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 // @route   GET /api/users
 // @access  Private/Admin
 export const getUsers = asyncHandler(async (req, res) => {
-  try {
-    const listOfUsers = await User.find({});
+  const pageSize = process.env.PAGINATION_LIMIT;
+  const page = Number(req.query.pageNumber) || 1;
+  const totalItems = await User.countDocuments({});
 
-    if (listOfUsers) {
-      res.status(200).json(listOfUsers);
+  const users = await User.find({})
+    .limit(pageSize)
+    .skip((page - 1) * pageSize);
+
+  try {
+    if (users) {
+      res.status(200).json({
+        users,
+        page,
+        pageSize,
+        pages: Math.ceil(totalItems / pageSize),
+      });
     } else {
       res.status(404);
       throw new Error("No users to be shown");

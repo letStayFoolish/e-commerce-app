@@ -1,6 +1,7 @@
 import { USERS_URL } from "../../../../constants";
 import type { IUpdatedUser, IUser } from "../../../../types";
 import { apiSlice } from "../index";
+import { getUsersQuery } from "./types";
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -40,9 +41,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["User"], // clear the cache
     }),
 
-    getUsers: builder.query<IUser[], void>({
-      query: () => ({
+    // Get All Users:
+    getUsers: builder.query<getUsersQuery, { pageNumber: string }>({
+      query: ({ pageNumber }) => ({
         url: USERS_URL,
+        params: {
+          pageNumber,
+        },
       }),
       providesTags: ["User"], // if we do not do that, we need to reload after we delete user
       keepUnusedDataFor: 5,

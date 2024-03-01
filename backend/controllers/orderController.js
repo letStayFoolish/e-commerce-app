@@ -155,10 +155,23 @@ export const updateOrderToDelivered = asyncHandler(async (req, res) => {
 // @route   GET /api/orders
 // @access  Private/Admin
 export const getAllOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({});
+  const pageSize = process.env.PAGINATION_LIMIT;
+  const page = Number(req.query.pageNumber) || 1;
+  const totalItems = await Order.countDocuments({});
+
+  const orders = await Order.find({})
+    .limit(pageSize)
+    .skip((page - 1) * pageSize);
 
   if (orders) {
-    res.status(200).json(orders);
+    res
+      .status(200)
+      .json({
+        orders,
+        page,
+        pageSize,
+        pages: Math.ceil(totalItems / pageSize),
+      });
   } else {
     res.status(404);
     throw new Error("Order list is empty");
