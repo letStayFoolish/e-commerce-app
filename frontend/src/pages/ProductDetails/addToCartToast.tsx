@@ -27,7 +27,9 @@ export const addToCartToast = (
     </Row>
 
     <hr />
-    <p>You have {qty} items to your cart</p>
+    <p>
+      You have add {qty} {qty > 1 ? "items" : "item"} to your cart
+    </p>
     <hr />
     <p>
       <strong>Total: </strong> ${addDecimals(qty * product.price)}
